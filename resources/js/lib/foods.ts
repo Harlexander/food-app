@@ -83,6 +83,7 @@ export const categories = {
       {
         "name": "Egusi with Mixed Meat",
         "description": "Traditional melon seed soup with Beef, Chicken, Cow-Leg and/or Tripe",
+        "image": "/food/egusi.png",
         "portion_sizes": {
           "Large Cooler": 550.0,
           "Small Cooler": 350.0,
@@ -93,6 +94,7 @@ export const categories = {
       {
         "name": "Egusi with Fish or Goat",
         "description": "Traditional melon seed soup with fish or goat meat",
+        "image": "/food/egusi.png",
         "portion_sizes": {
           "Large Cooler": 550.0,
           "Small Cooler": 350.0,
@@ -103,6 +105,7 @@ export const categories = {
       {
         "name": "Egusi with Stock Fish & Dry Fish",
         "description": "Traditional melon seed soup with stock fish and dry fish",
+        "image": "/food/egusi.png",
         "portion_sizes": {
           "Large Cooler": 550.0,
           "Small Cooler": 350.0,
@@ -111,8 +114,42 @@ export const categories = {
         }
       },
       {
+        "name": "Okro Soup",
+        "description": "Okro soup with assorted meats",
+        "image": "/food/okro.png",
+        "portion_sizes": {
+          "Large Cooler": 500.0,
+          "Small Cooler": 300.0,
+          "Full Pan": 180.0,
+          "Half Pan": 80.0
+        }
+      },
+      {
+        "name": "Pepper Soup",
+        "description": "Spicy pepper soup with assorted meats",
+        "image": "/food/pepper-soup.png",
+        "portion_sizes": {
+          "Large Cooler": 450.0,
+          "Small Cooler": 280.0,
+          "Full Pan": 160.0,
+          "Half Pan": 70.0
+        }
+      },
+      {
+        "name": "Vegetable Soup",
+        "description": "Rich vegetable soup with assorted meats",
+        "image": "/food/vegetable.png",
+        "portion_sizes": {
+          "Large Cooler": 520.0,
+          "Small Cooler": 320.0,
+          "Full Pan": 200.0,
+          "Half Pan": 90.0
+        }
+      },
+      {
         "name": "Gbegiri",
         "description": "Bean soup with Beef, Chicken, Cow-Leg and/or Tripe",
+        "image": "/food/gbegiri.png",
         "portion_sizes": {
           "Half Pan": 50.0
         }

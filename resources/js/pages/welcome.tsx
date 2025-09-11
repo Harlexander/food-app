@@ -9,6 +9,7 @@ import { categories as categoriesMap } from '@/lib/foods';
 import AddToCartDialog from '@/components/add-to-cart-dialog';
 import FloatingCartButton from '@/components/floating-cart-button';
 import CartSheet from '@/components/cart-sheet';
+import { useAppearance } from '@/hooks/use-appearance';
 
 type PortionSizes = Record<string, number>;
 
@@ -31,6 +32,7 @@ export default function Dashboard() {
     const [dialogOpen, setDialogOpen] = React.useState(false);
     const [dialogFood, setDialogFood] = React.useState<(FoodItem & { category: string }) | null>(null);
     const [cartOpen, setCartOpen] = React.useState(false);
+    const { appearance, updateAppearance } = useAppearance();
 
     const foods = React.useMemo(() => {
         const rows: Array<FoodItem & { category: string }> = [];
@@ -41,6 +43,10 @@ export default function Dashboard() {
         }
         return selected === 'All' ? rows : rows.filter((r) => r.category === selected);
     }, [selected]);
+
+    React.useEffect(() => {
+        updateAppearance('light');
+    }, [foods]);
 
     return (
         <div className='bg-white min-h-screen relative overflow-hidden'>
