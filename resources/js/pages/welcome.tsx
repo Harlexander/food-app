@@ -88,7 +88,7 @@ export default function Dashboard() {
                             <div key={`${food.category}:${food.name}`} className="relative">
                                 {/* decorative notch/ribbon */}
                                 <div className="absolute -left-3 bottom-24 h-0 w-0 border-y-8 border-y-transparent border-r-8 border-r-orange-500" />
-                                <Card className="overflow-hidden rounded border-0 bg-white shadow-lg">
+                                <Card className="overflow-hidden rounded border-0 bg-white shadow-none border hover:shadow-lg cursor-pointer"  onClick={() => { setDialogFood(food); setDialogOpen(true); }}>
                                     <div className="flex gap-3 sm:block">
                                         {/* Image (left on mobile, full on larger screens) */}
                                         <div className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-md sm:h-64 sm:w-full sm:rounded-none">
@@ -111,14 +111,8 @@ export default function Dashboard() {
                                                 </div>
                                                 <div className="mt-2 flex items-baseline gap-4 items-center">
                                                     <div className="text-2xl font-bold text-orange-600">${price.toFixed(2)}</div>
-                                                    <div className="font-semibold text-slate-400 line-through">$90.00</div>
                                                 </div>
                                             </CardContent>
-                                            <CardFooter className="items-center justify-between gap-2">
-                                                <Button size={'sm'} className="gap-2 rounded bg-orange-500 px-4 py-3 text-sm text-white hover:bg-orange-600" onClick={() => { setDialogFood(food); setDialogOpen(true); }}>
-                                                   Add To Cart
-                                                </Button>
-                                            </CardFooter>
                                         </div>
                                     </div>
                                 </Card>
@@ -136,7 +130,11 @@ export default function Dashboard() {
                         portion_sizes={dialogFood.portion_sizes}
                     />
                 )}
-                <FloatingCartButton onClick={() => setCartOpen(true)} />
+                {
+                    foods.length > 0 && (
+                        <FloatingCartButton onClick={() => setCartOpen(true)} />
+                    )
+                }
                 <CartSheet open={cartOpen} onOpenChange={setCartOpen} />
             </div>
         </div>
