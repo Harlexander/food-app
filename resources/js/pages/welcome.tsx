@@ -10,6 +10,7 @@ import AddToCartDialog from '@/components/add-to-cart-dialog';
 import FloatingCartButton from '@/components/floating-cart-button';
 import CartSheet from '@/components/cart-sheet';
 import { useAppearance } from '@/hooks/use-appearance';
+import { useCartStore } from '@/lib/cart-store';
 
 type PortionSizes = Record<string, number>;
 
@@ -33,6 +34,7 @@ export default function Dashboard() {
     const [dialogFood, setDialogFood] = React.useState<(FoodItem & { category: string }) | null>(null);
     const [cartOpen, setCartOpen] = React.useState(false);
     const { appearance, updateAppearance } = useAppearance();
+    const { items } = useCartStore();
 
     const foods = React.useMemo(() => {
         const rows: Array<FoodItem & { category: string }> = [];
@@ -131,7 +133,7 @@ export default function Dashboard() {
                     />
                 )}
                 {
-                    foods.length > 0 && (
+                    foods.length > 0 && dialogFood && items.length > 0 && (
                         <FloatingCartButton onClick={() => setCartOpen(true)} />
                     )
                 }

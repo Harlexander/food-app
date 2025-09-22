@@ -3,9 +3,23 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from '@/com
 import { Button } from '@/components/ui/button'
 import { Minus, Plus, Trash2 } from 'lucide-react'
 import { useCartStore } from '@/lib/cart-store'
+import SuccessDialog from '@/components/success-dialog'
 
 export default function CartSheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
   const { items, updateQuantity, removeItem, total, clear } = useCartStore()
+  const [successOpen, setSuccessOpen] = React.useState(false)
+
+  const handleBookNow = () => {
+    // Simulate form submission
+    console.log('Order submitted:', { items, total: total() })
+    
+    // Clear cart and close sheet
+    clear()
+    onOpenChange(false)
+    
+    // Show success dialog
+    setSuccessOpen(true)
+  }
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -45,11 +59,12 @@ export default function CartSheet({ open, onOpenChange }: { open: boolean; onOpe
             </div>
             <div className="flex gap-2">
               <Button variant="outline" className="flex-1 border-orange-200 hover:bg-orange-50" onClick={() => clear()}>Clear</Button>
-              <Button className="flex-1 bg-orange-500 text-white hover:bg-orange-600">Order Now</Button>
+              <Button className="flex-1 bg-orange-500 text-white hover:bg-orange-600" onClick={handleBookNow}>Book Now</Button>
             </div>
           </div>
         </SheetFooter>
       </SheetContent>
+      <SuccessDialog open={successOpen} onOpenChange={setSuccessOpen} />
     </Sheet>
   )
 }
