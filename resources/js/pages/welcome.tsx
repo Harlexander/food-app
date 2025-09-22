@@ -105,7 +105,7 @@ export default function Dashboard() {
                                                     <CardDescription className="line-clamp-1 text-slate-500">{food.description}</CardDescription>
                                                 ) : null}
                                             </CardHeader>
-                                            <CardContent className=''>
+                                            <CardContent className='hidden'>
                                                 <div className="flex items-center">
                                                     {Array.from({ length: 5 }).map((_, i) => (
                                                         <Star key={i} className={i < 4 ? 'size-4 text-orange-500 fill-current' : 'size-4 text-orange-500'} />

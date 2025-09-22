@@ -51,13 +51,7 @@ export default function AddToCartDialog({ open, onOpenChange, name, category, po
               <h2 className="text-2xl font-extrabold text-slate-900">{name}</h2>
               <Badge className="rounded-md bg-orange-500 text-white">{category}</Badge>
             </div>
-            <div className="mt-3 flex items-center gap-2 text-orange-500">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="size-4 fill-current" />
-              ))}
-              <span className="text-sm text-slate-500">(201)</span>
-            </div>
-
+          
             <div className="mt-6">
               <div className="text-sm font-semibold text-slate-800">Select Size</div>
               <div className="mt-3 grid gap-2">
