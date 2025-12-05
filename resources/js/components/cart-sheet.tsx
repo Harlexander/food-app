@@ -4,18 +4,23 @@ import { Button } from '@/components/ui/button'
 import { Minus, Plus, Trash2 } from 'lucide-react'
 import { useCartStore } from '@/lib/cart-store'
 import SuccessDialog from '@/components/success-dialog'
+import CheckoutDialog from '@/components/checkout-dialog'
 
 export default function CartSheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
   const { items, updateQuantity, removeItem, total, clear } = useCartStore()
   const [successOpen, setSuccessOpen] = React.useState(false)
+  const [checkoutOpen, setCheckoutOpen] = React.useState(false)
 
-  const handleBookNow = () => {
-    // Simulate form submission
-    console.log('Order submitted:', { items, total: total() })
-    
+  const [orderNumber, setOrderNumber] = React.useState<string | null>(null)
+
+  const handleOrderSuccess = (orderNum?: string) => {
     // Clear cart and close sheet
     clear()
     onOpenChange(false)
+    setCheckoutOpen(false)
+    
+    // Store order number for display
+    setOrderNumber(orderNum || null)
     
     // Show success dialog
     setSuccessOpen(true)
@@ -59,12 +64,17 @@ export default function CartSheet({ open, onOpenChange }: { open: boolean; onOpe
             </div>
             <div className="flex gap-2">
               <Button variant="outline" className="flex-1 border-orange-200 hover:bg-orange-50" onClick={() => clear()}>Clear</Button>
-              <Button className="flex-1 bg-orange-500 text-white hover:bg-orange-600" onClick={handleBookNow}>Book Now</Button>
+              <Button className="flex-1 bg-orange-500 text-white hover:bg-orange-600" onClick={() => setCheckoutOpen(true)} disabled={items.length === 0}>Checkout</Button>
             </div>
           </div>
         </SheetFooter>
       </SheetContent>
-      <SuccessDialog open={successOpen} onOpenChange={setSuccessOpen} />
+      <CheckoutDialog 
+        open={checkoutOpen} 
+        onOpenChange={setCheckoutOpen}
+        onSuccess={handleOrderSuccess}
+      />
+      <SuccessDialog open={successOpen} onOpenChange={setSuccessOpen} orderNumber={orderNumber} />
     </Sheet>
   )
 }

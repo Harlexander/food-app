@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Head } from '@inertiajs/react';
 import { Star } from 'lucide-react';
-import { categories as categoriesMap } from '@/lib/foods';
 import AddToCartDialog from '@/components/add-to-cart-dialog';
 import FloatingCartButton from '@/components/floating-cart-button';
 import CartSheet from '@/components/cart-sheet';
@@ -15,40 +14,51 @@ import { useCartStore } from '@/lib/cart-store';
 type PortionSizes = Record<string, number>;
 
 type FoodItem = {
+    id?: number;
     name: string;
     description?: string;
     image?: string;
+    category: string;
     portion_sizes: PortionSizes;
 };
 
-const allCategories = Object.keys(categoriesMap) as (keyof typeof categoriesMap)[];
+type FoodsData = Record<string, FoodItem[]>;
 
 function getPrimaryPrice(portions: PortionSizes): number {
     const first = Object.values(portions)[0];
     return typeof first === 'number' ? first : 0;
 }
 
-export default function Dashboard() {
+export default function Dashboard({ foods }: { foods: FoodsData }) {
     const [selected, setSelected] = React.useState<string>('All');
     const [dialogOpen, setDialogOpen] = React.useState(false);
-    const [dialogFood, setDialogFood] = React.useState<(FoodItem & { category: string }) | null>(null);
+    const [dialogFood, setDialogFood] = React.useState<FoodItem | null>(null);
     const [cartOpen, setCartOpen] = React.useState(false);
     const { appearance, updateAppearance } = useAppearance();
     const { items } = useCartStore();
 
-    const foods = React.useMemo(() => {
-        const rows: Array<FoodItem & { category: string }> = [];
+    // Extract categories from the foods data
+    const allCategories = React.useMemo(() => {
+        return foods ? Object.keys(foods) : [];
+    }, [foods]);
+
+    // Transform and filter foods based on selected category
+    const filteredFoods = React.useMemo(() => {
+        if (!foods) return [];
+        
+        const rows: FoodItem[] = [];
         for (const category of allCategories) {
-            for (const item of categoriesMap[category] as FoodItem[]) {
+            const categoryFoods = foods[category] || [];
+            for (const item of categoryFoods) {
                 rows.push({ ...item, category });
             }
         }
         return selected === 'All' ? rows : rows.filter((r) => r.category === selected);
-    }, [selected]);
+    }, [foods, allCategories, selected]);
 
     React.useEffect(() => {
         updateAppearance('light');
-    }, [foods]);
+    }, []);
 
     return (
         <div className='bg-white min-h-screen relative overflow-hidden'>
@@ -72,22 +82,22 @@ export default function Dashboard() {
                     >
                         All Menu
                     </Button>
-                    {allCategories.map((c) => (
+                    {allCategories.map((category) => (
                         <Button
-                            key={c as string}
-                            onClick={() => setSelected(c as string)}
-                            className={selected === c ? 'bg-orange-500 text-white' : 'border border-orange-500 bg-white text-orange-500'}
+                            key={category}
+                            onClick={() => setSelected(category)}
+                            className={selected === category ? 'bg-orange-500 text-white' : 'border border-orange-500 bg-white text-orange-500'}
                         >
-                            {c as string}
+                            {category}
                         </Button>
                     ))}
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {foods.map((food) => {
+                    {filteredFoods.map((food) => {
                         const price = getPrimaryPrice(food.portion_sizes);
                         return (
-                            <div key={`${food.category}:${food.name}`} className="relative">
+                            <div key={food.id || `${food.category}:${food.name}`} className="relative">
                                 {/* decorative notch/ribbon */}
                                 <div className="absolute -left-3 bottom-24 h-0 w-0 border-y-8 border-y-transparent border-r-8 border-r-orange-500" />
                                 <Card className="overflow-hidden rounded border-0 bg-white shadow-none border hover:shadow-lg cursor-pointer"  onClick={() => { setDialogFood(food); setDialogOpen(true); }}>
@@ -133,7 +143,7 @@ export default function Dashboard() {
                     />
                 )}
                 {
-                    foods.length > 0 && dialogFood && items.length > 0 && (
+                    filteredFoods.length > 0 && dialogFood && items.length > 0 && (
                         <FloatingCartButton onClick={() => setCartOpen(true)} />
                     )
                 }

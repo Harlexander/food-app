@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Minus, Plus, Star } from 'lucide-react'
+import { Minus, Plus } from 'lucide-react'
 import { useCartStore, type CartItem } from '@/lib/cart-store'
 
 type PortionSizes = Record<string, number>
@@ -67,7 +67,7 @@ export default function AddToCartDialog({ open, onOpenChange, name, category, po
                       />
                       <span className="text-base text-slate-800">{size}</span>
                     </div>
-                    <span className="text-slate-700">+ ${portion_sizes[size].toFixed(2)}</span>
+                    <span className="text-slate-700">+ ${Number(portion_sizes[size]).toFixed(2)}</span>
                   </label>
                 ))}
               </div>

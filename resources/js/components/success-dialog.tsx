@@ -5,10 +5,12 @@ import { CheckCircle, Phone, Mail } from 'lucide-react'
 
 export default function SuccessDialog({ 
   open, 
-  onOpenChange 
+  onOpenChange,
+  orderNumber 
 }: { 
   open: boolean
-  onOpenChange: (open: boolean) => void 
+  onOpenChange: (open: boolean) => void
+  orderNumber?: string | null
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -26,6 +28,13 @@ export default function SuccessDialog({
           <p className="text-gray-600">
             Thank you for your order! We have received your request and will contact you shortly to confirm the details and arrange delivery.
           </p>
+          
+          {orderNumber && (
+            <div className="rounded-lg bg-gray-100 p-3">
+              <p className="text-sm text-gray-600">Order Number</p>
+              <p className="text-lg font-bold text-gray-900">{orderNumber}</p>
+            </div>
+          )}
           
           <div className="rounded-lg bg-orange-50 p-4">
             <div className="flex items-center justify-center gap-2 text-orange-800">
