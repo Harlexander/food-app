@@ -49,7 +49,7 @@ export default function SuccessDialog({
           
           <Button 
             onClick={() => onOpenChange(false)}
-            className="w-full bg-orange-500 text-white hover:bg-orange-600"
+            className="w-full bg-[#A67C5B] text-white hover:bg-orange-600"
           >
             Close
           </Button>

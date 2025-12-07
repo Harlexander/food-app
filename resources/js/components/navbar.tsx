@@ -25,36 +25,12 @@ export function Navbar({ active = 'Home' }: { active?: string }) {
   const itemsCount = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0))
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/10 backdrop-blur supports-[backdrop-filter]:bg-background/10">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4">
+      <div className="px-4 md:px-8 lg:px-16 flex items-center justify-between gap-4 px-4 py-4">
         {/* Brand */}
         <a href="#" className="flex items-center gap-2">
           <img src="./logo.png" alt="" className='w-16 h-16' />
           <p className='text-2xl font-bold font-[Barlow]'>Veronica's Kitchen</p>
         </a>
-
-        {/* Desktop Nav */}
-        <nav className="hidden items-center gap-6 md:flex">
-          {navItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className={cn(
-                'relative text-sm font-medium text-black',
-                active === item.label && 'text-orange-500'
-              )}
-            >
-              <span className="inline-flex items-center gap-1">
-                {item.label}
-                {item.hasDropdown && (
-                  <ChevronDown className="size-4 text-black" />
-                )}
-              </span>
-              {active === item.label && (
-                <span className="absolute -bottom-2 left-0 right-0 mx-auto block h-0.5 w-8 rounded-full bg-orange-500" />
-              )}
-            </a>
-          ))}
-        </nav>
 
         {/* Actions */}
         <div className="flex items-center gap-3">

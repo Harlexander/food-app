@@ -11,7 +11,7 @@ export default function FloatingCartButton({ onClick }: { onClick: () => void })
       <Button
         size={'lg'}
         onClick={onClick}
-        className="relative h-12 rounded-full bg-orange-500 px-6 text-white shadow-lg shadow-orange-500/30 hover:bg-orange-600 w-full text-lg transition-transform duration-300 ease-out hover:scale-105"
+        className="relative h-12 rounded-full bg-[#A67C5B] px-6 text-white shadow-lg shadow-[#A67C5B]/30 hover:bg-orange-600 w-full text-lg transition-transform duration-300 ease-out hover:scale-105"
       >
         <ShoppingCart className="mr-2 size-6" />Proceed to Booking
         {itemsCount > 0 && (

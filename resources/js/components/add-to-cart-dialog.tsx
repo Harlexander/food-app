@@ -49,7 +49,7 @@ export default function AddToCartDialog({ open, onOpenChange, name, category, po
           <div className="p-6 md:p-8">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-extrabold text-slate-900">{name}</h2>
-              <Badge className="rounded-md bg-orange-500 text-white">{category}</Badge>
+              <Badge className="rounded-md bg-[#A67C5B] text-white">{category}</Badge>
             </div>
           
             <div className="mt-6">
@@ -89,7 +89,7 @@ export default function AddToCartDialog({ open, onOpenChange, name, category, po
 
             <div className="mt-8">
               <Button
-                className="h-12 w-full rounded-full bg-orange-500 text-base font-semibold text-white hover:bg-orange-600"
+                className="h-12 w-full rounded-full bg-[#A67C5B] text-base font-semibold text-white hover:bg-orange-600"
                 onClick={() => {
                   if (!selectedSize) return
                   addItem({ name, category, size: selectedSize, unitPrice: base, quantity })

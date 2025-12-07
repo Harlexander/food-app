@@ -311,7 +311,7 @@ export default function CheckoutDialog({ open, onOpenChange, onSuccess }: Checko
             <Button
               type="submit"
               disabled={processing || items.length === 0}
-              className="flex-1 bg-orange-500 text-white hover:bg-orange-600"
+              className="flex-1 bg-[#A67C5B] text-white hover:bg-orange-600"
             >
               {processing ? 'Placing Order...' : 'Place Order'}
             </Button>

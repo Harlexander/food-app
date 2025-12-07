@@ -64,7 +64,7 @@ export default function CartSheet({ open, onOpenChange }: { open: boolean; onOpe
             </div>
             <div className="flex gap-2">
               <Button variant="outline" className="flex-1 border-orange-200 hover:bg-orange-50" onClick={() => clear()}>Clear</Button>
-              <Button className="flex-1 bg-orange-500 text-white hover:bg-orange-600" onClick={() => setCheckoutOpen(true)} disabled={items.length === 0}>Checkout</Button>
+              <Button className="flex-1 bg-[#A67C5B] text-white hover:bg-orange-600" onClick={() => setCheckoutOpen(true)} disabled={items.length === 0}>Checkout</Button>
             </div>
           </div>
         </SheetFooter>
