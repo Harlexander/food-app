@@ -58,7 +58,7 @@
 </head>
 <body>
     <div class="header">
-        <img src="https://veronica.pevent.fun/wp-content/uploads/2025/11/Layer1.webp" alt="Logo" class="w-24 h-24 mx-auto mb-4">
+        <img src="http://food.peachy.ng/logo.png" alt="Logo" class="w-24 h-24 mx-auto mb-4">
         <h1>Order Confirmation</h1>
     </div>
     

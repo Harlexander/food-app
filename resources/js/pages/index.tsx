@@ -100,7 +100,7 @@ export default function Dashboard({ foods }: { foods: FoodsData }) {
                             <div key={food.id || `${food.category}:${food.name}`} className="relative">
                                 {/* decorative notch/ribbon */}
                                 <div className="absolute -left-3 bottom-24 h-0 w-0 border-y-8 border-y-transparent border-r-8 border-r-[#A67C5B]" />
-                                <Card className="overflow-hidden rounded border-0 bg-white shadow-none border hover:shadow-lg cursor-pointer"  onClick={() => { setDialogFood(food); setDialogOpen(true); }}>
+                                <Card className="overflow-hidden rounded border-0 bg-white shadow-none border hover:shadow-lg cursor-pointer px-2 py-2 sm:p-0"  onClick={() => { setDialogFood(food); setDialogOpen(true); }}>
                                     <div className="flex gap-3 sm:block">
                                         {/* Image (left on mobile, full on larger screens) */}
                                         <div className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-md sm:h-64 sm:w-full sm:rounded-none">

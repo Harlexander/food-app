@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Foods;
 use App\Models\FoodPortionSize;
+use App\Models\Foods;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class FoodSeeder extends Seeder
@@ -63,6 +64,7 @@ class FoodSeeder extends Seeder
             'Fufu' => [
                 [
                     'name' => 'Pounded Yam',
+                    'description' => 'Traditional Nigerian pounded yam, smooth and stretchy',
                     'image' => '/food/semo.png',
                     'portion_sizes' => [
                         'Party Size' => 2.0,
@@ -71,6 +73,7 @@ class FoodSeeder extends Seeder
                 ],
                 [
                     'name' => 'Eba',
+                    'description' => 'Garri (cassava flakes) prepared with hot water',
                     'image' => '/food/eba.png',
                     'portion_sizes' => [
                         'Party Size' => 2.0,
@@ -79,6 +82,7 @@ class FoodSeeder extends Seeder
                 ],
                 [
                     'name' => 'Amala',
+                    'description' => 'Yam flour fufu, dark and smooth',
                     'image' => '/food/amala.png',
                     'portion_sizes' => [
                         'Party Size' => 2.0,
@@ -87,6 +91,7 @@ class FoodSeeder extends Seeder
                 ],
                 [
                     'name' => 'Wheat',
+                    'description' => 'Wheat flour fufu, soft and smooth',
                     'image' => '/food/wheat.png',
                     'portion_sizes' => [
                         'Party Size' => 2.0,
@@ -173,6 +178,7 @@ class FoodSeeder extends Seeder
             'Meat' => [
                 [
                     'name' => 'Beef',
+                    'description' => 'Tender beef cuts, seasoned and cooked to perfection',
                     'portion_sizes' => [
                         'Large Cooler' => 1000.0,
                         'Small Cooler' => 500.0,
@@ -182,6 +188,7 @@ class FoodSeeder extends Seeder
                 ],
                 [
                     'name' => 'Chicken',
+                    'description' => 'Succulent chicken pieces, well-seasoned',
                     'portion_sizes' => [
                         'Large Cooler' => 350.0,
                         'Small Cooler' => 180.0,
@@ -191,6 +198,7 @@ class FoodSeeder extends Seeder
                 ],
                 [
                     'name' => 'African Chicken',
+                    'description' => 'Traditional African-style chicken with rich spices',
                     'portion_sizes' => [
                         'Large Cooler' => 450.0,
                         'Small Cooler' => 225.0,
@@ -200,6 +208,7 @@ class FoodSeeder extends Seeder
                 ],
                 [
                     'name' => 'Turkey',
+                    'description' => 'Tender turkey pieces, seasoned and cooked',
                     'portion_sizes' => [
                         'Large Cooler' => 450.0,
                         'Small Cooler' => 225.0,
@@ -221,6 +230,7 @@ class FoodSeeder extends Seeder
                 ],
                 [
                     'name' => 'Plantains (Fried)',
+                    'description' => 'Sweet fried plantains, golden and crispy',
                     'portion_sizes' => [
                         'Full Pan' => 80.0,
                         'Half Pan' => 40.0,
@@ -238,6 +248,7 @@ class FoodSeeder extends Seeder
                 ],
                 [
                     'name' => 'Meat Pies',
+                    'description' => 'Flaky pastry filled with seasoned meat',
                     'portion_sizes' => [
                         'Small Unit' => 2.0,
                         'Bigger Unit' => 3.0,
