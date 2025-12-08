@@ -37,10 +37,6 @@ export default function SuccessDialog({
           )}
           
           <div className="rounded-lg bg-orange-50 p-4">
-            <div className="flex items-center justify-center gap-2 text-orange-800">
-              <Phone className="h-4 w-4" />
-              <span className="text-sm font-medium">We'll call you within 15 minutes</span>
-            </div>
             <div className="mt-2 flex items-center justify-center gap-2 text-orange-700">
               <Mail className="h-4 w-4" />
               <span className="text-sm">Check your email for order confirmation</span>

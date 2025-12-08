@@ -179,7 +179,7 @@ export default function CheckoutDialog({ open, onOpenChange, onSuccess }: Checko
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="customer_phone">Phone Number</Label>
+              <Label htmlFor="customer_phone">Phone Number *</Label>
               <Input
                 id="customer_phone"
                 type="tel"

@@ -134,7 +134,7 @@
         @endif
         
         <p style="margin-top: 30px; padding: 15px; background-color: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px;">
-            <strong>Action Required:</strong> Please review this order and contact the customer to confirm the details. The customer has been notified that they should expect feedback within 15 minutes.
+            <strong>Action Required:</strong> Please review this order and contact the customer to confirm the details. The customer has been notified that they should expect feedback from you.
         </p>
         
         <p style="margin-top: 20px;">Please log into the dashboard to manage this order.</p>
