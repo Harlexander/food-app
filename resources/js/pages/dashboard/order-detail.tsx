@@ -135,7 +135,9 @@ export default function OrderDetailPage({ order }: OrderDetailProps) {
                         <Card className="border-0 shadow-sm">
                             <CardHeader>
                                 <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                                   <div className="bg-primary/20 text-primary rounded p-2">
                                     <Package className="h-5 w-5" />
+                                   </div>   
                                     Order Items
                                 </CardTitle>
                                 <CardDescription>{order.items.length} {order.items.length === 1 ? 'item' : 'items'} in this order</CardDescription>
@@ -169,7 +171,9 @@ export default function OrderDetailPage({ order }: OrderDetailProps) {
                         <Card className="border-0 shadow-sm">
                             <CardHeader>
                                 <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                                    <FileText className="h-5 w-5" />
+                                    <div className="bg-primary/20 text-primary rounded p-2">
+                                        <FileText className="h-5 w-5" />
+                                    </div>
                                     Order Information
                                 </CardTitle>
                             </CardHeader>
@@ -226,7 +230,9 @@ export default function OrderDetailPage({ order }: OrderDetailProps) {
                         <Card className="border-0 shadow-sm">
                             <CardHeader>
                                 <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                                    <User className="h-5 w-5" />
+                                    <div className="bg-primary/20 text-primary rounded p-2">
+                                        <User className="h-5 w-5" />
+                                    </div>
                                     Customer Information
                                 </CardTitle>
                             </CardHeader>
@@ -274,7 +280,9 @@ export default function OrderDetailPage({ order }: OrderDetailProps) {
                             <Card className="border-0 shadow-sm">
                                 <CardHeader>
                                     <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                                        <MapPin className="h-5 w-5" />
+                                        <div className="bg-primary/20 text-primary rounded p-2">
+                                            <MapPin className="h-5 w-5" />
+                                        </div>
                                         Delivery Address
                                     </CardTitle>
                                 </CardHeader>
@@ -298,10 +306,12 @@ export default function OrderDetailPage({ order }: OrderDetailProps) {
                         )}
 
                         {/* Order Summary */}
-                        <Card className="border-0 shadow-sm bg-gradient-to-br from-green-50 to-emerald-50">
+                        <Card className="border-0 shadow-sm bg-primary/20">
                             <CardHeader>
                                 <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                                    <DollarSign className="h-5 w-5 text-green-600" />
+                                    <div className="bg-primary/20 text-primary rounded p-2">
+                                        <DollarSign className="h-5 w-5" />
+                                    </div>
                                     Order Summary
                                 </CardTitle>
                             </CardHeader>
@@ -332,5 +342,6 @@ export default function OrderDetailPage({ order }: OrderDetailProps) {
         </AppLayout>
     );
 }
+
 
 

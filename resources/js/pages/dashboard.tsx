@@ -21,6 +21,7 @@ import {
     UtensilsCrossed,
     Calendar,
     Activity,
+    ChartBar,
 } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -125,25 +126,25 @@ export default function Dashboard({
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Admin Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-6 p-6">
+            <div className="flex h-full flex-1 flex-col gap-4 md:gap-6 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-1">
-                    <h1 className="text-3xl font-bold ">Dashboard</h1>
-                    <p className="">Monitor orders, revenue, and manage your food business efficiently.</p>
+                    <h1 className="sm:text-3xl text-2xl font-bold ">Dashboard</h1>
+                    <p className="text-sm text-gray-500">Monitor orders, revenue, and manage your food business efficiently.</p>
                 </div>
 
                 {/* Summary Cards - Top Row */}
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <div className="grid gap-3 md:gap-4 grid-cols-2 lg:grid-cols-4">
                     {/* Total Orders */}
                     <Card className="border-0 shadow-sm bg-gradient-to-br from-green-500 to-green-600 text-white">
                         <CardHeader className="pb-2">
-                            <CardDescription className="text-green-100 text-sm">Total Orders</CardDescription>
+                            <CardDescription className="text-green-100 text-xs md:text-sm">Total Orders</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-4xl font-bold mb-2">{stats.orders.total}</div>
-                            <div className="flex items-center gap-1 text-green-100 text-sm">
-                                <ArrowUpRight className="h-4 w-4" />
-                                <span>{stats.orders.today} orders today</span>
+                            <div className="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{stats.orders.total}</div>
+                            <div className="flex items-center gap-1 text-green-100 text-xs md:text-sm">
+                                <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4" />
+                                <span className="truncate">{stats.orders.today} orders today</span>
                             </div>
                         </CardContent>
                     </Card>
@@ -151,13 +152,14 @@ export default function Dashboard({
                     {/* Completed Orders */}
                     <Card className="border-0 shadow-sm">
                         <CardHeader className="pb-2">
-                            <CardDescription className="text-sm">Completed Orders</CardDescription>
+                            <CardDescription className="text-xs md:text-sm">Completed Orders</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-4xl font-bold mb-2">{stats.orders.completed}</div>
-                            <div className="flex items-center gap-1 text-gray-500 text-sm">
-                                <ArrowUpRight className="h-4 w-4" />
-                                <span>Increased from last month</span>
+                            <div className="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{stats.orders.completed}</div>
+                            <div className="flex items-center gap-1 text-gray-500 text-xs md:text-sm">
+                                <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4" />
+                                <span className="hidden sm:inline">Increased from last month</span>
+                                <span className="sm:hidden">Last month</span>
                             </div>
                         </CardContent>
                     </Card>
@@ -165,13 +167,13 @@ export default function Dashboard({
                     {/* Pending Orders */}
                     <Card className="border-0 shadow-sm">
                         <CardHeader className="pb-2">
-                            <CardDescription className="text-sm">Pending Orders</CardDescription>
+                            <CardDescription className="text-xs md:text-sm">Pending Orders</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-4xl font-bold mb-2">{stats.orders.pending}</div>
-                            <div className="flex items-center gap-1 text-gray-500 text-sm">
-                                <ArrowUpRight className="h-4 w-4" />
-                                <span>Requires attention</span>
+                            <div className="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{stats.orders.pending}</div>
+                            <div className="flex items-center gap-1 text-gray-500 text-xs md:text-sm">
+                                <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4" />
+                                <span className="truncate">Requires attention</span>
                             </div>
                         </CardContent>
                     </Card>
@@ -179,13 +181,13 @@ export default function Dashboard({
                     {/* Total Revenue */}
                     <Card className="border-0 shadow-sm">
                         <CardHeader className="pb-2">
-                            <CardDescription className="text-sm">Total Revenue</CardDescription>
+                            <CardDescription className="text-xs md:text-sm">Total Revenue</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-4xl font-bold mb-2">{formatCurrency(stats.revenue.total)}</div>
-                            <div className="flex items-center gap-1 text-gray-500 text-sm">
-                                <ArrowUpRight className="h-4 w-4" />
-                                <span>{formatCurrency(stats.revenue.month)} this month</span>
+                            <div className="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 md:mb-2">{formatCurrency(stats.revenue.total)}</div>
+                            <div className="flex items-center gap-1 text-gray-500 text-xs md:text-sm">
+                                <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4" />
+                                <span className="truncate">{formatCurrency(stats.revenue.month)} this month</span>
                             </div>
                         </CardContent>
                     </Card>
@@ -193,149 +195,21 @@ export default function Dashboard({
 
                 {/* Main Content Grid */}
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {/* Revenue Analytics */}
-                    <Card className="lg:col-span-2 border-0 shadow-sm">
-                        <CardHeader>
-                            <CardTitle className="text-lg font-semibold">Revenue Analytics</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-4">
-                                <div className="flex items-end justify-between gap-2 h-48">
-                                    {revenueByDay.length > 0 ? (
-                                        revenueByDay.map((day, index) => {
-                                            const maxRevenue = Math.max(...revenueByDay.map(d => d.revenue));
-                                            const height = maxRevenue > 0 ? (day.revenue / maxRevenue) * 100 : 0;
-                                            const isHighest = day.revenue === maxRevenue;
-                                            
-                                            return (
-                                                <div key={day.date} className="flex-1 flex flex-col items-center gap-2">
-                                                    <div className="relative w-full h-full flex items-end group">
-                                                        <div
-                                                            className={`w-full rounded-t transition-all cursor-pointer ${
-                                                                isHighest 
-                                                                    ? 'bg-green-500' 
-                                                                    : 'bg-green-200 hover:bg-green-300'
-                                                            }`}
-                                                            style={{ height: `${Math.max(height, 5)}%` }}
-                                                            title={`${formatCurrency(day.revenue)} - ${day.orders} orders`}
-                                                        />
-                                                        {isHighest && (
-                                                            <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-medium text-green-600">
-                                                                {formatCurrency(day.revenue)}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <div className="text-xs text-gray-500 text-center font-medium">
-                                                        {formatDate(day.date).split(' ')[0]}
-                                                    </div>
-                                                </div>
-                                            );
-                                        })
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-gray-400">
-                                            No data available
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="flex items-center justify-between pt-4 border-t">
-                                    <div className="text-sm text-gray-600">
-                                        <span className="font-semibold text-gray-900">{formatCurrency(stats.revenue.today)}</span> today
-                                    </div>
-                                    <div className="flex items-center gap-1 text-sm">
-                                        {revenueChange >= 0 ? (
-                                            <>
-                                                <ArrowUpRight className="h-4 w-4 text-green-600" />
-                                                <span className="text-green-600 font-medium">{Math.abs(revenueChange).toFixed(1)}%</span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <ArrowDownRight className="h-4 w-4 text-red-600" />
-                                                <span className="text-red-600 font-medium">{Math.abs(revenueChange).toFixed(1)}%</span>
-                                            </>
-                                        )}
-                                        <span className="text-gray-500">from yesterday</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Order Progress */}
-                    <Card className="border-0 shadow-sm">
-                        <CardHeader>
-                            <CardTitle className="text-lg font-semibold">Order Progress</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="flex flex-col items-center justify-center space-y-4">
-                                <div className="relative w-40 h-40">
-                                    <svg className="transform -rotate-90 w-40 h-40">
-                                        <circle
-                                            cx="80"
-                                            cy="80"
-                                            r="70"
-                                            stroke="currentColor"
-                                            strokeWidth="12"
-                                            fill="none"
-                                            className="text-gray-200"
-                                        />
-                                        <circle
-                                            cx="80"
-                                            cy="80"
-                                            r="70"
-                                            stroke="currentColor"
-                                            strokeWidth="12"
-                                            fill="none"
-                                            strokeDasharray={`${2 * Math.PI * 70}`}
-                                            strokeDashoffset={`${2 * Math.PI * 70 * (1 - completionPercentage / 100)}`}
-                                            className="text-green-500 transition-all"
-                                            strokeLinecap="round"
-                                        />
-                                    </svg>
-                                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                        <div className="text-3xl font-bold">{completionPercentage.toFixed(0)}%</div>
-                                        <div className="text-xs">Completed</div>
-                                    </div>
-                                </div>
-                                <div className="space-y-2 w-full">
-                                    <div className="flex items-center justify-between text-sm">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                                            <span className="text-gray-600">Completed</span>
-                                        </div>
-                                        <span className="font-semibold">{stats.orders.completed}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between text-sm">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                                            <span className="text-gray-600">Pending</span>
-                                        </div>
-                                        <span className="font-semibold">{stats.orders.pending}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between text-sm">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-3 h-3 rounded-full bg-gray-300"></div>
-                                            <span className="text-gray-600">In Progress</span>
-                                        </div>
-                                        <span className="font-semibold">
-                                            {stats.orders.total - stats.orders.completed - stats.orders.pending}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-
                     {/* Recent Orders */}
                     <Card className="lg:col-span-2 border-0 shadow-sm">
-                        <CardHeader className="flex flex-row items-center justify-between">
+                        <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                             <div>
-                                <CardTitle className="text-lg font-semibold">Recent Orders</CardTitle>
-                                <CardDescription>Latest order activity</CardDescription>
+                                <CardTitle className="text-base md:text-lg font-semibold flex items-center gap-2">
+                                    <div className="bg-primary/20 text-primary rounded p-2">
+                                        <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
+                                    </div>
+                                    Recent Orders
+                                </CardTitle>
+                                <CardDescription className="text-xs md:text-sm">Latest order activity</CardDescription>
                             </div>
-                            <Button variant="outline" size="sm">View All</Button>
                         </CardHeader>
                         <CardContent>
-                            <div className="space-y-3">
+                            <div className="space-y-3 divide-y divide-gray-100">
                                 {recentOrders.length === 0 ? (
                                     <div className="text-center py-8 text-gray-400">
                                         <ShoppingCart className="h-12 w-12 mx-auto mb-2 opacity-50" />
@@ -347,28 +221,27 @@ export default function Dashboard({
                                         return (
                                             <div
                                                 key={order.id}
-                                                className="flex items-center justify-between p-3 rounded-lg transition-colors"
+                                                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 rounded-lg transition-colors"
                                             >
-                                                <div className="flex items-center gap-3 flex-1">
-                                                    <div className={`p-2 rounded-lg ${statusColor.bg}`}>
-                                                        <ShoppingCart className={`h-4 w-4 ${statusColor.text}`} />
-                                                    </div>
+                                                <div className="flex items-start gap-3 flex-1 min-w-0">
                                                     <div className="flex-1 min-w-0">
-                                                        <div className="flex items-center gap-2 mb-1">
-                                                            <span className="text-sm font-semibold">{order.order_number}</span>
+                                                        <div className="flex flex-wrap items-center gap-2 mb-1">
+                                                            <span className="text-sm font-semibold truncate">{order.order_number}</span>
                                                             <Badge variant="outline" className="text-xs">
                                                                 {order.type}
                                                             </Badge>
                                                         </div>
-                                                        <div className="text-xs text-gray-500">
-                                                            {order.customer_name} • {formatDate(order.created_at)}
+                                                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs text-gray-500">
+                                                            <span className="truncate">{order.customer_name}</span>
+                                                            <span className="hidden sm:inline">•</span>
+                                                            <span>{formatDate(order.created_at)}</span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="flex items-center gap-3">
-                                                    <div className="text-right">
-                                                        <div className="text-sm font-semibold">{formatCurrency(order.total)}</div>
-                                                        <Badge className={`${statusColor.bg} ${statusColor.text} border-0 text-xs`}>
+                                                <div className="flex items-center justify-between sm:justify-end gap-3 flex-shrink-0">
+                                                    <div className="text-left sm:text-right">
+                                                        <div className="text-sm md:text-base font-semibold">{formatCurrency(order.total)}</div>
+                                                        <Badge className={`${statusColor.bg} ${statusColor.text} border-0 text-xs mt-1`}>
                                                             {order.status}
                                                         </Badge>
                                                     </div>
@@ -384,8 +257,13 @@ export default function Dashboard({
                     {/* Top Selling Items */}
                     <Card className="border-0 shadow-sm">
                         <CardHeader>
-                            <CardTitle className="text-lg font-semibold">Top Selling Items</CardTitle>
-                            <CardDescription>Best performing foods</CardDescription>
+                            <CardTitle className="text-base md:text-lg font-semibold flex items-center gap-2">
+                                <div className="bg-primary/20 text-primary rounded p-2">
+                                    <UtensilsCrossed className="h-4 w-4 md:h-5 md:w-5" />
+                                </div>
+                                Top Selling
+                            </CardTitle>
+                            <CardDescription className="text-xs md:text-sm">Best performing foods</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-3">
@@ -398,10 +276,10 @@ export default function Dashboard({
                                     topSellingItems.map((item, index) => (
                                         <div
                                             key={item.food_name}
-                                            className="flex items-center justify-between p-3 rounded-lg transition-colors"
+                                            className="flex items-center justify-between gap-3 p-3 rounded-lg transition-colors"
                                         >
-                                            <div className="flex items-center gap-3 flex-1">
-                                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 text-green-600 font-bold text-sm">
+                                            <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+                                                <div className="flex h-7 w-7 md:h-8 md:w-8 items-center justify-center rounded-full bg-green-100 text-green-600 font-bold text-xs md:text-sm flex-shrink-0">
                                                     {index + 1}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
@@ -409,7 +287,7 @@ export default function Dashboard({
                                                     <div className="text-xs text-gray-500">{item.total_quantity} sold</div>
                                                 </div>
                                             </div>
-                                            <div className="text-sm font-semibold text-gray-900">
+                                            <div className="text-sm md:text-base font-semibold text-gray-900 flex-shrink-0">
                                                 {formatCurrency(item.total_revenue)}
                                             </div>
                                         </div>
@@ -419,44 +297,16 @@ export default function Dashboard({
                         </CardContent>
                     </Card>
 
-                    {/* Order Status Breakdown */}
-                    <Card className="border-0 shadow-sm">
-                        <CardHeader>
-                            <CardTitle className="text-lg font-semibold">Order Status</CardTitle>
-                            <CardDescription>Breakdown by status</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-3">
-                                {Object.entries(orderStatusBreakdown).map(([status, count]) => {
-                                    const statusColor = statusColors[status] || { bg: 'bg-gray-50', text: 'text-gray-600' };
-                                    const percentage = stats.orders.total > 0 ? (count / stats.orders.total) * 100 : 0;
-                                    return (
-                                        <div key={status} className="space-y-1">
-                                            <div className="flex items-center justify-between text-sm">
-                                                <div className="flex items-center gap-2">
-                                                    <div className={`w-2 h-2 rounded-full ${statusColor.bg.replace('50', '500')}`}></div>
-                                                    <span className="font-medium capitalize">{status}</span>
-                                                </div>
-                                                <span className="font-semibold text-gray-900">{count}</span>
-                                            </div>
-                                            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                                                <div
-                                                    className={`h-full ${statusColor.bg.replace('50', '500')} rounded-full transition-all`}
-                                                    style={{ width: `${percentage}%` }}
-                                                />
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </CardContent>
-                    </Card>
-
                     {/* Foods by Category */}
-                    <Card className="border-0 shadow-sm">
+                    <Card className="border-0 shadow-sm md:col-span-2 lg:col-span-2">
                         <CardHeader>
-                            <CardTitle className="text-lg font-semibold">Foods by Category</CardTitle>
-                            <CardDescription>Inventory breakdown</CardDescription>
+                            <CardTitle className="text-base md:text-lg font-semibold flex items-center gap-2">
+                                <div className="bg-primary/20 text-primary rounded p-2">
+                                    <ChefHat className="h-4 w-4 md:h-5 md:w-5" />
+                                </div>
+                                Foods by Category
+                            </CardTitle>
+                            <CardDescription className="text-xs md:text-sm">Inventory breakdown</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-3">
@@ -470,7 +320,7 @@ export default function Dashboard({
                                             </div>
                                             <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                                                 <div
-                                                    className="h-full bg-green-500 rounded-full transition-all"
+                                                    className="h-full bg-primary rounded-full transition-all"
                                                     style={{ width: `${percentage}%` }}
                                                 />
                                             </div>
@@ -484,43 +334,45 @@ export default function Dashboard({
                     {/* Quick Stats */}
                     <Card className="border-0 shadow-sm">
                         <CardHeader>
-                            <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                                <Activity className="h-5 w-5 text-green-600" />
+                            <CardTitle className="text-base md:text-lg font-semibold flex items-center gap-2">
+                                <div className="bg-primary/20 text-primary rounded p-2">
+                                    <Activity className="h-4 w-4 md:h-5 md:w-5" />
+                                </div>
                                 Quick Stats
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="space-y-4">
+                            <div className="space-y-3 md:space-y-4">
                                 <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2 rounded-lg bg-white">
-                                            <Users className="h-5 w-5 text-green-600" />
+                                    <div className="flex items-center gap-2 md:gap-3">
+                                        <div className="p-1.5 md:p-2 rounded-lg bg-white">
+                                            <Users className="h-4 w-4 md:h-5 md:w-5 text-primary" />
                                         </div>
                                         <div>
-                                            <div className="text-sm">Total Users</div>
-                                            <div className="text-xl font-bold">{stats.users.total}</div>
+                                            <div className="text-xs md:text-sm">Total Users</div>
+                                            <div className="text-lg md:text-xl font-bold">{stats.users.total}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2 rounded-lg bg-white">
-                                            <ChefHat className="h-5 w-5 text-green-600" />
+                                    <div className="flex items-center gap-2 md:gap-3">
+                                        <div className="p-1.5 md:p-2 rounded-lg bg-white">
+                                            <ChefHat className="h-4 w-4 md:h-5 md:w-5 text-primary" />
                                         </div>
                                         <div>
-                                            <div className="text-sm">Active Foods</div>
-                                            <div className="text-xl font-bold">{stats.foods.active}</div>
+                                            <div className="text-xs md:text-sm">Active Foods</div>
+                                            <div className="text-lg md:text-xl font-bold">{stats.foods.active}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2 rounded-lg bg-white">
-                                            <DollarSign className="h-5 w-5 text-green-600" />
+                                    <div className="flex items-center gap-2 md:gap-3">
+                                        <div className="p-1.5 md:p-2 rounded-lg bg-white">
+                                            <DollarSign className="h-4 w-4 md:h-5 md:w-5 text-primary" />
                                         </div>
                                         <div>
-                                            <div className="text-sm">Today's Revenue</div>
-                                            <div className="text-xl font-bold">{formatCurrency(stats.revenue.today)}</div>
+                                            <div className="text-xs md:text-sm">Today's Revenue</div>
+                                            <div className="text-lg md:text-xl font-bold">{formatCurrency(stats.revenue.today)}</div>
                                         </div>
                                     </div>
                                 </div>

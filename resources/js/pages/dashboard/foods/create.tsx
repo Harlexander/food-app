@@ -383,3 +383,4 @@ export default function CreateFoodPage({ categories }: CreateFoodPageProps) {
 }
 
 
+

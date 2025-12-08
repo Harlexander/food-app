@@ -6,17 +6,16 @@ import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import dashboardRoutes from '@/routes/dashboard';
 import {
     ChefHat,
-    Package,
     Plus,
     Filter,
-    Search,
     CheckCircle,
     XCircle,
+    Trash,
 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import EditFoodDialog from '@/components/edit-food-dialog';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -60,6 +59,9 @@ type FoodsPageProps = {
 export default function FoodsPage({ foods, categories, counts, filters }: FoodsPageProps) {
     const [editDialogOpen, setEditDialogOpen] = React.useState(false)
     const [selectedFood, setSelectedFood] = React.useState<FoodsPageProps['foods'][0] | null>(null)
+    const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false)
+    const [foodToDelete, setFoodToDelete] = React.useState<FoodsPageProps['foods'][0] | null>(null)
+    const [isDeleting, setIsDeleting] = React.useState(false)
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('en-US', {
@@ -88,16 +90,26 @@ export default function FoodsPage({ foods, categories, counts, filters }: FoodsP
         router.reload({ only: ['foods', 'counts'] })
     };
 
-    const foodsByCategory = React.useMemo(() => {
-        const grouped: Record<string, typeof foods> = {};
-        foods.forEach(food => {
-            if (!grouped[food.category]) {
-                grouped[food.category] = [];
-            }
-            grouped[food.category].push(food);
+    const handleDeleteClick = (food: FoodsPageProps['foods'][0]) => {
+        setFoodToDelete(food)
+        setDeleteDialogOpen(true)
+    };
+
+    const handleDeleteConfirm = () => {
+        if (!foodToDelete) return;
+
+        setIsDeleting(true);
+        router.delete(`/dashboard/foods/${foodToDelete.id}`, {
+            onSuccess: () => {
+                setDeleteDialogOpen(false);
+                setFoodToDelete(null);
+                setIsDeleting(false);
+            },
+            onError: () => {
+                setIsDeleting(false);
+            },
         });
-        return grouped;
-    }, [foods]);
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -106,50 +118,24 @@ export default function FoodsPage({ foods, categories, counts, filters }: FoodsP
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold">Foods Management</h1>
-                        <p>Manage your food inventory and menu items</p>
+                        <h1 className="sm:text-3xl text-2xl font-bold">Foods Management</h1>
+                        <p className="text-sm text-gray-500">Manage your food inventory and menu items</p>
                     </div>
                     <Link href="/dashboard/foods/create">
-                        <Button className="gap-2 bg-green-500 hover:bg-green-600">
+                        <Button className="gap-2 bg-primary text-white hover:bg-primary/80">
                             <Plus className="h-4 w-4" />
                             Add Food
                         </Button>
                     </Link>
                 </div>
 
-                {/* Stats Cards */}
-                <div className="grid gap-4 md:grid-cols-3">
-                    <Card className="border-0 shadow-sm">
-                        <CardHeader className="pb-2">
-                            <CardDescription className="text-sm">Total Foods</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-3xl font-bold">{counts.total}</div>
-                        </CardContent>
-                    </Card>
-                    <Card className="border-0 shadow-sm">
-                        <CardHeader className="pb-2">
-                            <CardDescription className="text-sm">Active</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-3xl font-bold text-green-600">{counts.active}</div>
-                        </CardContent>
-                    </Card>
-                    <Card className="border-0 shadow-sm">
-                        <CardHeader className="pb-2">
-                            <CardDescription className="text-sm">Inactive</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-3xl font-bold text-gray-400">{counts.inactive}</div>
-                        </CardContent>
-                    </Card>
-                </div>
-
                 {/* Filters */}
                 <Card className="border-0 shadow-sm">
                     <CardHeader>
                         <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                            <Filter className="h-5 w-5" />
+                            <div className="bg-primary/20 text-primary rounded p-2">
+                                <Filter className="h-5 w-5" />
+                            </div>
                             Filters
                         </CardTitle>
                     </CardHeader>
@@ -188,86 +174,100 @@ export default function FoodsPage({ foods, categories, counts, filters }: FoodsP
                     </CardContent>
                 </Card>
 
-                {/* Foods List */}
-                {Object.keys(foodsByCategory).length === 0 ? (
-                    <Card className="border-0 shadow-sm">
-                        <CardContent className="py-12">
-                            <div className="text-center">
+                {/* Foods Table */}
+                <Card className="border-0 shadow-sm">
+                    <CardContent className="p-0">
+                        {foods.length === 0 ? (
+                            <div className="text-center py-12">
                                 <ChefHat className="h-12 w-12 mx-auto mb-4 text-gray-400" />
                                 <p className="text-gray-500">No foods found</p>
                             </div>
-                        </CardContent>
-                    </Card>
-                ) : (
-                    <div className="space-y-6">
-                        {Object.entries(foodsByCategory).map(([category, categoryFoods]) => (
-                            <Card key={category} className="border-0 shadow-sm">
-                                <CardHeader>
-                                    <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                                        <Package className="h-5 w-5" />
-                                        {category}
-                                        <Badge variant="outline" className="ml-2">
-                                            {categoryFoods.length} {categoryFoods.length === 1 ? 'item' : 'items'}
-                                        </Badge>
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                                        {categoryFoods.map((food) => (
-                                            <div
-                                                key={food.id}
-                                                className="p-4 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors"
-                                            >
-                                                <div className="flex items-start justify-between mb-3">
-                                                    <div className="flex-1">
-                                                        <div className="flex items-center gap-2 mb-1">
-                                                            <h3 className="font-semibold">{food.name}</h3>
-                                                            {food.is_active ? (
-                                                                <CheckCircle className="h-4 w-4 text-green-600" />
-                                                            ) : (
-                                                                <XCircle className="h-4 w-4 text-gray-400" />
-                                                            )}
-                                                        </div>
-                                                        {food.description && (
-                                                            <p className="text-sm text-gray-600 line-clamp-2">{food.description}</p>
+                        ) : (
+                            <div className="overflow-x-auto">
+                                <table className="w-full">
+                                    <thead>
+                                        <tr className="border-b border-gray-200 bg-gray-50">
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Name
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Category
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Portion Sizes
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Status
+                                            </th>
+                                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white divide-y divide-gray-200">
+                                        {foods.map((food) => (
+                                            <tr key={food.id} className="hover:bg-gray-50 transition-colors">
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <div className="flex items-center gap-2">
+                                                        <img src={food.image || ''} alt={food.name} className="w-10 h-10 object-cover rounded-md" />
+                                                        <span className="text-sm font-semibold text-gray-900">{food.name}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <Badge variant="outline">{food.category}</Badge>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {food.portion_sizes.length > 0 ? (
+                                                            food.portion_sizes.map((size) => (
+                                                                <Badge key={size.id} variant="outline" className="text-xs">
+                                                                    {size.size_name}
+                                                                </Badge>
+                                                            ))
+                                                        ) : (
+                                                            <span className="text-sm text-gray-400">-</span>
                                                         )}
                                                     </div>
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <div className="text-xs font-medium text-gray-500">Portion Sizes:</div>
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {food.portion_sizes.map((size) => (
-                                                            <Badge key={size.id} variant="outline" className="text-xs">
-                                                                {size.size_name}: {formatCurrency(size.price)}
-                                                            </Badge>
-                                                        ))}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    {food.is_active ? (
+                                                        <Badge className="bg-green-100 text-green-700 border-0 flex items-center gap-1">
+                                                            <CheckCircle className="h-3 w-3" />
+                                                            Active
+                                                        </Badge>
+                                                    ) : (
+                                                        <Badge className="bg-gray-100 text-gray-600 border-0 flex items-center gap-1">
+                                                            <XCircle className="h-3 w-3" />
+                                                            Inactive
+                                                        </Badge>
+                                                    )}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-right">
+                                                    <div className="flex items-center justify-end gap-2">
+                                                        <Button 
+                                                            variant="outline" 
+                                                            size="sm"
+                                                            onClick={() => handleEdit(food)}
+                                                        >
+                                                            Edit
+                                                        </Button>
+                                                        <Button 
+                                                            variant="destructive" 
+                                                            size="sm"
+                                                            onClick={() => handleDeleteClick(food)}
+                                                        >
+                                                            <Trash className="h-4 w-4" />
+                                                        </Button>
                                                     </div>
-                                                </div>
-                                                <div className="mt-3 flex gap-2">
-                                                    <Button 
-                                                        variant="outline" 
-                                                        size="sm" 
-                                                        className="flex-1"
-                                                        onClick={() => handleEdit(food)}
-                                                    >
-                                                        Edit
-                                                    </Button>
-                                                    <Button 
-                                                        variant="outline" 
-                                                        size="sm"
-                                                        className={food.is_active ? 'text-red-600 hover:text-red-700' : 'text-green-600 hover:text-green-700'}
-                                                    >
-                                                        {food.is_active ? 'Deactivate' : 'Activate'}
-                                                    </Button>
-                                                </div>
-                                            </div>
+                                                </td>
+                                            </tr>
                                         ))}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
-                )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
 
                 {/* Edit Dialog */}
                 <EditFoodDialog
@@ -277,6 +277,37 @@ export default function FoodsPage({ foods, categories, counts, filters }: FoodsP
                     categories={categories}
                     onSuccess={handleEditSuccess}
                 />
+
+                {/* Delete Confirmation Dialog */}
+                <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Delete Food</DialogTitle>
+                            <DialogDescription>
+                                Are you sure you want to delete <strong>{foodToDelete?.name}</strong>? This action cannot be undone and will permanently delete the food item and all its portion sizes.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter>
+                            <Button
+                                variant="outline"
+                                onClick={() => {
+                                    setDeleteDialogOpen(false);
+                                    setFoodToDelete(null);
+                                }}
+                                disabled={isDeleting}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                variant="destructive"
+                                onClick={handleDeleteConfirm}
+                                disabled={isDeleting}
+                            >
+                                {isDeleting ? 'Deleting...' : 'Delete'}
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
             </div>
         </AppLayout>
     );

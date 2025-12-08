@@ -324,4 +324,34 @@ class FoodController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Remove the specified food from storage.
+     */
+    public function destroy(Foods $food)
+    {
+        try {
+            DB::beginTransaction();
+
+            // Delete associated portion sizes (cascade should handle this, but being explicit)
+            $food->portionSizes()->delete();
+
+            // Delete image file if it exists
+            if ($food->image && file_exists(public_path($food->image))) {
+                @unlink(public_path($food->image));
+            }
+
+            // Delete the food
+            $food->delete();
+
+            DB::commit();
+
+            return redirect()->route('dashboard.foods')
+                ->with('success', 'Food deleted successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            return back()->withErrors(['general' => 'Failed to delete food. Please try again.']);
+        }
+    }
 }

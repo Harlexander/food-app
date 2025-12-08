@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderConfirmationAdmin;
+use App\Mail\OrderConfirmationCustomer;
 use App\Models\Foods;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -10,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -120,6 +123,26 @@ class OrderController extends Controller
             }
 
             DB::commit();
+
+            // Load order relationships for emails
+            $order->load('items');
+
+            // Send confirmation email to customer
+            try {
+                Mail::to($order->customer_email)->send(new OrderConfirmationCustomer($order));
+            } catch (\Exception $e) {
+                // Log email error but don't fail the order
+                \Log::error('Failed to send customer confirmation email: ' . $e->getMessage());
+            }
+
+            // Send notification email to admin
+            try {
+                $adminEmail = env('ADMIN_EMAIL', 'admin@example.com'); // Placeholder admin email
+                Mail::to($adminEmail)->send(new OrderConfirmationAdmin($order));
+            } catch (\Exception $e) {
+                // Log email error but don't fail the order
+                \Log::error('Failed to send admin notification email: ' . $e->getMessage());
+            }
 
             return response()->json([
                 'success' => true,

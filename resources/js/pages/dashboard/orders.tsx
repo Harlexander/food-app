@@ -1,22 +1,12 @@
 import * as React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import {
-    ShoppingCart,
-    Clock,
-    CheckCircle,
-    Package,
-    ArrowRight,
-    Filter,
-    Search,
-} from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -104,57 +94,15 @@ export default function OrdersPage({ orders, statusCounts, filters }: OrdersPage
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Orders Management" />
-            <div className="flex h-full flex-1 flex-col gap-6 p-6">
+            <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-1">
-                    <h1 className="text-3xl font-bold">Orders</h1>
-                    <p>Manage and track all customer orders</p>
-                </div>
-
-                {/* Stats Cards */}
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    <Card className="border-0 shadow-sm">
-                        <CardHeader className="pb-2">
-                            <CardDescription className="text-sm">Total Orders</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-3xl font-bold">{statusCounts.all}</div>
-                        </CardContent>
-                    </Card>
-                    <Card className="border-0 shadow-sm">
-                        <CardHeader className="pb-2">
-                            <CardDescription className="text-sm">Pending</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-3xl font-bold text-yellow-600">{statusCounts.pending}</div>
-                        </CardContent>
-                    </Card>
-                    <Card className="border-0 shadow-sm">
-                        <CardHeader className="pb-2">
-                            <CardDescription className="text-sm">Preparing</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-3xl font-bold text-purple-600">{statusCounts.preparing}</div>
-                        </CardContent>
-                    </Card>
-                    <Card className="border-0 shadow-sm">
-                        <CardHeader className="pb-2">
-                            <CardDescription className="text-sm">Completed</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-3xl font-bold text-emerald-600">{statusCounts.completed}</div>
-                        </CardContent>
-                    </Card>
+                    <h1 className="sm:text-3xl text-2xl font-bold">Orders</h1>
+                    <p className="text-sm text-gray-500">Manage and track all customer orders</p>
                 </div>
 
                 {/* Filters */}
                 <Card className="border-0 shadow-sm">
-                    <CardHeader>
-                        <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                            <Filter className="h-5 w-5" />
-                            Filters
-                        </CardTitle>
-                    </CardHeader>
                     <CardContent>
                         <div className="flex flex-wrap gap-4">
                             <div className="flex-1 min-w-[200px]">
@@ -194,12 +142,6 @@ export default function OrdersPage({ orders, statusCounts, filters }: OrdersPage
 
                 {/* Orders List */}
                 <Card className="border-0 shadow-sm">
-                    <CardHeader>
-                        <CardTitle className="text-lg font-semibold">Order List</CardTitle>
-                        <CardDescription>
-                            {orders.data.length} {orders.data.length === 1 ? 'order' : 'orders'} found
-                        </CardDescription>
-                    </CardHeader>
                     <CardContent>
                         {orders.data.length === 0 ? (
                             <div className="text-center py-12">
@@ -207,30 +149,35 @@ export default function OrdersPage({ orders, statusCounts, filters }: OrdersPage
                                 <p className="text-gray-500">No orders found</p>
                             </div>
                         ) : (
-                            <div className="space-y-3">
+                            <div className="space-y-2">
                                 {orders.data.map((order) => {
-                                    const statusColor = statusColors[order.status] || { bg: 'bg-gray-50', text: 'text-gray-600' };
+                                    const statusColor = 'bg-primary';
                                     return (
-                                        <div
+                                        <Link
                                             key={order.id}
-                                            className="flex items-center justify-between p-4 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors"
+                                            href={`/dashboard/orders/${order.id}`}
+                                            className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4 p-4 rounded-lg border border-gray-100 hover:bg-gray-50 hover:border-gray-200 transition-colors cursor-pointer"
                                         >
-                                            <div className="flex items-center gap-4 flex-1">
-                                                <div className={`p-3 rounded-lg ${statusColor.bg}`}>
-                                                    <ShoppingCart className={`h-5 w-5 ${statusColor.text}`} />
+                                            <div className="flex items-start gap-3 md:gap-4 flex-1 min-w-0">
+                                                <div className="bg-primary/20 text-primary rounded p-2 flex-shrink-0">
+                                                    <ShoppingCart className="h-5 w-5" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="flex items-center gap-2 mb-1">
-                                                        <span className="text-sm font-semibold">{order.order_number}</span>
-                                                        <Badge className={`${statusColor.bg} ${statusColor.text} border-0`}>
+                                                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                                                        <span className="text-sm md:text-base font-semibold truncate">{order.order_number}</span>
+                                                        <Badge className={`bg-primary text-white border-0 text-xs`}>
                                                             {order.status}
                                                         </Badge>
-                                                        <Badge variant="outline" className={typeColors[order.type]}>
+                                                        <Badge variant="outline" className={`${typeColors[order.type]} text-xs`}>
                                                             {order.type}
                                                         </Badge>
                                                     </div>
-                                                    <div className="text-sm text-gray-600">
-                                                        {order.customer_name} • {order.items_count} {order.items_count === 1 ? 'item' : 'items'} • {formatDate(order.created_at)}
+                                                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-sm text-gray-600">
+                                                        <span className="font-medium truncate">{order.customer_name}</span>
+                                                        <span className="hidden sm:inline">•</span>
+                                                        <span>{order.items_count} {order.items_count === 1 ? 'item' : 'items'}</span>
+                                                        <span className="hidden sm:inline">•</span>
+                                                        <span className="text-xs sm:text-sm">{formatDate(order.created_at)}</span>
                                                     </div>
                                                     {order.customer_phone && (
                                                         <div className="text-xs text-gray-500 mt-1">
@@ -239,22 +186,20 @@ export default function OrdersPage({ orders, statusCounts, filters }: OrdersPage
                                                     )}
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-4">
-                                                <div className="text-right">
-                                                    <div className="text-lg font-bold">{formatCurrency(order.total)}</div>
-                                                    <div className="text-xs text-gray-500">
+                                            <div className="flex items-center justify-between md:justify-end md:flex-col md:items-end gap-2 md:gap-1 flex-shrink-0 md:ml-4">
+                                                <div className="text-lg md:text-xl font-bold">{formatCurrency(order.total)}</div>
+                                                <div className="text-xs text-gray-500 md:text-right">
+                                                    <div className="hidden sm:block">
                                                         {formatCurrency(order.subtotal)} + {formatCurrency(order.tax)} tax
                                                         {order.delivery_fee > 0 && ` + ${formatCurrency(order.delivery_fee)} delivery`}
                                                     </div>
+                                                    <div className="sm:hidden">
+                                                        <div>{formatCurrency(order.subtotal)} subtotal</div>
+                                                        <div>{formatCurrency(order.tax)} tax{order.delivery_fee > 0 && ` + ${formatCurrency(order.delivery_fee)} delivery`}</div>
+                                                    </div>
                                                 </div>
-                                                <Link href={`/dashboard/orders/${order.id}`}>
-                                                    <Button variant="outline" size="sm" className="gap-2">
-                                                        View More
-                                                        <ArrowRight className="h-4 w-4" />
-                                                    </Button>
-                                                </Link>
                                             </div>
-                                        </div>
+                                        </Link>
                                     );
                                 })}
                             </div>

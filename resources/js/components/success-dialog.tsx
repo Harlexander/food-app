@@ -19,7 +19,7 @@ export default function SuccessDialog({
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
             <CheckCircle className="h-8 w-8 text-green-600" />
           </div>
-          <DialogTitle className="text-2xl font-bold text-gray-900">
+          <DialogTitle className="text-2xl font-bold text-gray-900 text-center">
             Order Submitted Successfully!
           </DialogTitle>
         </DialogHeader>

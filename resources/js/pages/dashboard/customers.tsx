@@ -109,16 +109,16 @@ export default function CustomersPage({ customers, stats, filters }: CustomersPa
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Customers Management" />
-            <div className="flex h-full flex-1 flex-col gap-6 p-6">
+            <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6">
                 {/* Header */}
                 <div className="flex flex-col gap-1">
-                    <h1 className="text-3xl font-bold">Customers</h1>
-                    <p>Manage and view all customer information</p>
+                    <h1 className="sm:text-3xl text-2xl font-bold">Customers</h1>
+                    <p className="text-sm text-gray-500">Manage and view all customer information</p>
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    <Card className="border-0 shadow-sm">
+                <div className="flex gap-4 items-center justify-between overflow-x-auto">
+                    <Card className="flex-1 min-w-[200px]">
                         <CardHeader className="pb-2">
                             <CardDescription className="text-sm">Total Customers</CardDescription>
                         </CardHeader>
@@ -126,7 +126,7 @@ export default function CustomersPage({ customers, stats, filters }: CustomersPa
                             <div className="text-3xl font-bold">{stats.total}</div>
                         </CardContent>
                     </Card>
-                    <Card className="border-0 shadow-sm">
+                    <Card className="flex-1 min-w-[200px]">
                         <CardHeader className="pb-2">
                             <CardDescription className="text-sm">With Orders</CardDescription>
                         </CardHeader>
@@ -134,7 +134,7 @@ export default function CustomersPage({ customers, stats, filters }: CustomersPa
                             <div className="text-3xl font-bold text-green-600">{stats.with_orders}</div>
                         </CardContent>
                     </Card>
-                    <Card className="border-0 shadow-sm">
+                    <Card className="flex-1 min-w-[200px]">
                         <CardHeader className="pb-2">
                             <CardDescription className="text-sm">No Orders</CardDescription>
                         </CardHeader>
@@ -142,7 +142,7 @@ export default function CustomersPage({ customers, stats, filters }: CustomersPa
                             <div className="text-3xl font-bold text-gray-400">{stats.without_orders}</div>
                         </CardContent>
                     </Card>
-                    <Card className="border-0 shadow-sm">
+                    <Card className="flex-1 min-w-[200px]">
                         <CardHeader className="pb-2">
                             <CardDescription className="text-sm">Total Revenue</CardDescription>
                         </CardHeader>
@@ -156,8 +156,10 @@ export default function CustomersPage({ customers, stats, filters }: CustomersPa
                 <Card className="border-0 shadow-sm">
                     <CardHeader>
                         <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                            <Filter className="h-5 w-5" />
-                            Filters
+                            <div className="bg-primary/20 text-primary rounded p-2">
+                                <Filter className="h-5 w-5" />
+                            </div>
+                            Search Customers
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -188,22 +190,6 @@ export default function CustomersPage({ customers, stats, filters }: CustomersPa
                                     </Button>
                                 </div>
                             </form>
-                            <div className="flex-1 min-w-[200px]">
-                                <label className="text-sm font-medium mb-2 block">Order Status</label>
-                                <Select
-                                    value={filters.has_orders}
-                                    onValueChange={(value) => handleFilterChange('has_orders', value)}
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="all">All Customers</SelectItem>
-                                        <SelectItem value="yes">With Orders ({stats.with_orders})</SelectItem>
-                                        <SelectItem value="no">No Orders ({stats.without_orders})</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
                         </div>
                     </CardContent>
                 </Card>
@@ -227,36 +213,36 @@ export default function CustomersPage({ customers, stats, filters }: CustomersPa
                                 {customers.data.map((customer) => (
                                     <div
                                         key={customer.id}
-                                        className="flex items-center justify-between p-4 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors"
+                                        className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors"
                                     >
-                                        <div className="flex items-center gap-4 flex-1">
-                                            <div className="p-3 rounded-lg bg-green-50">
-                                                <User className="h-5 w-5 text-green-600" />
+                                        <div className="flex items-start gap-3 md:gap-4 flex-1 min-w-0">
+                                            <div className="bg-primary/20 text-primary rounded p-2 flex-shrink-0">
+                                                <User className="h-5 w-5" />
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <span className="text-sm font-semibold">{customer.name}</span>
+                                                <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+                                                    <span className="text-sm md:text-base font-semibold truncate">{customer.name}</span>
                                                     {customer.orders_count > 0 && (
-                                                        <Badge variant="outline" className="text-xs">
+                                                        <Badge variant="outline" className="text-xs w-fit">
                                                             {customer.orders_count} {customer.orders_count === 1 ? 'order' : 'orders'}
                                                         </Badge>
                                                     )}
                                                 </div>
-                                                <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
-                                                    <div className="flex items-center gap-1">
-                                                        <Mail className="h-3 w-3" />
-                                                        <span>{customer.email}</span>
+                                                <div className="flex flex-col gap-2 text-sm text-gray-600">
+                                                    <div className="flex items-center gap-1 min-w-0">
+                                                        <Mail className="h-3 w-3 flex-shrink-0" />
+                                                        <span className="truncate">{customer.email}</span>
                                                     </div>
                                                     {customer.phone && (
                                                         <div className="flex items-center gap-1">
-                                                            <Phone className="h-3 w-3" />
+                                                            <Phone className="h-3 w-3 flex-shrink-0" />
                                                             <span>{customer.phone}</span>
                                                         </div>
                                                     )}
                                                     {(customer.address || customer.city) && (
-                                                        <div className="flex items-center gap-1">
-                                                            <MapPin className="h-3 w-3" />
-                                                            <span>
+                                                        <div className="flex items-start gap-1">
+                                                            <MapPin className="h-3 w-3 flex-shrink-0 mt-0.5" />
+                                                            <span className="break-words">
                                                                 {[customer.address, customer.city, customer.state]
                                                                     .filter(Boolean)
                                                                     .join(', ')}
@@ -264,36 +250,34 @@ export default function CustomersPage({ customers, stats, filters }: CustomersPa
                                                         </div>
                                                     )}
                                                 </div>
-                                                <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                                                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-2 text-xs text-gray-500">
                                                     <div className="flex items-center gap-1">
-                                                        <Calendar className="h-3 w-3" />
+                                                        <Calendar className="h-3 w-3 flex-shrink-0" />
                                                         <span>Joined: {formatDate(customer.created_at)}</span>
                                                     </div>
                                                     {customer.last_order_date && (
                                                         <div className="flex items-center gap-1">
-                                                            <ShoppingCart className="h-3 w-3" />
+                                                            <ShoppingCart className="h-3 w-3 flex-shrink-0" />
                                                             <span>Last order: {formatDate(customer.last_order_date)}</span>
                                                         </div>
                                                     )}
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-4">
-                                            <div className="text-right">
-                                                {customer.orders_count > 0 ? (
-                                                    <>
-                                                        <div className="text-lg font-bold">
-                                                            {formatCurrency(customer.total_spent)}
-                                                        </div>
-                                                        <div className="text-xs text-gray-500">Total spent</div>
-                                                    </>
-                                                ) : (
-                                                    <div className="text-sm text-gray-400">No orders yet</div>
-                                                )}
-                                            </div>
+                                        <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row items-start sm:items-center md:items-end lg:items-center gap-3 md:gap-4 flex-shrink-0">
+                                            {customer.orders_count > 0 ? (
+                                                <div className="text-left sm:text-right md:text-right">
+                                                    <div className="text-lg font-bold">
+                                                        {formatCurrency(customer.total_spent)}
+                                                    </div>
+                                                    <div className="text-xs text-gray-500">Total spent</div>
+                                                </div>
+                                            ) : (
+                                                <div className="text-sm text-gray-400">No orders yet</div>
+                                            )}
                                             {customer.orders_count > 0 && (
-                                                <Link href={`/dashboard/orders?search=${encodeURIComponent(customer.email)}`}>
-                                                    <Button variant="outline" size="sm" className="gap-2">
+                                                <Link href={`/dashboard/orders?search=${encodeURIComponent(customer.email)}`} className="w-full sm:w-auto">
+                                                    <Button variant="outline" size="sm" className="gap-2 w-full sm:w-auto">
                                                         View Orders
                                                         <ArrowRight className="h-4 w-4" />
                                                     </Button>

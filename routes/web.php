@@ -20,6 +20,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/foods/create', [FoodController::class, 'create'])->name('dashboard.foods.create');
     Route::post('/dashboard/foods', [FoodController::class, 'store'])->name('dashboard.foods.store');
     Route::put('/dashboard/foods/{food}', [FoodController::class, 'update'])->name('dashboard.foods.update');
+    Route::delete('/dashboard/foods/{food}', [FoodController::class, 'destroy'])->name('dashboard.foods.destroy');
     Route::get('/dashboard/customers', [CustomerController::class, 'index'])->name('dashboard.customers');
 });
 
