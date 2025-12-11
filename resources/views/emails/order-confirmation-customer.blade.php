@@ -116,11 +116,11 @@
         </div>
         @endif
         
-        <p style="margin-top: 30px;">We will contact you shortly to confirm the details and provide updates on your order. You can expect to hear from us within 15 minutes.</p>
+        <p style="margin-top: 30px;">We will contact you shortly to confirm the details and provide updates on your order. You can expect to hear from Veronica's Kitchen soon.</p>
         
         <p>If you have any questions, please don't hesitate to contact us.</p>
         
-        <p>Thank you for choosing us!</p>
+        <p>Thank you for choosing Veronica's Kitchen!</p>
     </div>
     
     <div class="footer">
@@ -128,5 +128,7 @@
     </div>
 </body>
 </html>
+
+
 
 

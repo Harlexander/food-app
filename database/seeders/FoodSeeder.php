@@ -19,7 +19,7 @@ class FoodSeeder extends Seeder
                 [
                     'name' => 'Jollof Rice',
                     'description' => 'Spicy traditional rice',
-                    'image' => '/food/jollof.png',
+                    'image' => '/food/jollof-rice.jpeg',
                     'portion_sizes' => [
                         'Large Cooler' => 150.0,
                         'Small Cooler' => 90.0,
@@ -41,7 +41,7 @@ class FoodSeeder extends Seeder
                 [
                     'name' => 'Fried Rice (Shrimp)',
                     'description' => 'Nigerian shrimp fried rice with peas and carrots',
-                    'image' => '/food/fried-rice-shrimp.png',
+                    'image' => '/food/fried-rice-shrimp.jpeg',
                     'portion_sizes' => [
                         'Large Cooler' => 200.0,
                         'Small Cooler' => 125.0,
@@ -52,7 +52,7 @@ class FoodSeeder extends Seeder
                 [
                     'name' => 'White Rice',
                     'description' => 'Parboiled',
-                    'image' => '/food/white-rice.png',
+                    'image' => '/food/white-rice.jpeg',
                     'portion_sizes' => [
                         'Large Cooler' => 150.0,
                         'Small Cooler' => 90.0,
@@ -65,7 +65,7 @@ class FoodSeeder extends Seeder
                 [
                     'name' => 'Pounded Yam',
                     'description' => 'Traditional Nigerian pounded yam, smooth and stretchy',
-                    'image' => '/food/semo.png',
+                    'image' => '/food/fufu.jpeg',
                     'portion_sizes' => [
                         'Party Size' => 2.0,
                         'Regular Size' => 4.0,
@@ -103,7 +103,7 @@ class FoodSeeder extends Seeder
                 [
                     'name' => 'Egusi with Mixed Meat',
                     'description' => 'Traditional melon seed soup with Beef, Chicken, Cow-Leg and/or Tripe',
-                    'image' => '/food/egusi.png',
+                    'image' => '/food/egusi.jpeg',
                     'portion_sizes' => [
                         'Large Cooler' => 550.0,
                         'Small Cooler' => 350.0,
@@ -114,7 +114,7 @@ class FoodSeeder extends Seeder
                 [
                     'name' => 'Egusi with Fish or Goat',
                     'description' => 'Traditional melon seed soup with fish or goat meat',
-                    'image' => '/food/egusi.png',
+                    'image' => '/food/egusi.jpeg',
                     'portion_sizes' => [
                         'Large Cooler' => 550.0,
                         'Small Cooler' => 350.0,
@@ -125,7 +125,7 @@ class FoodSeeder extends Seeder
                 [
                     'name' => 'Egusi with Stock Fish & Dry Fish',
                     'description' => 'Traditional melon seed soup with stock fish and dry fish',
-                    'image' => '/food/egusi.png',
+                    'image' => '/food/egusi.jpeg',
                     'portion_sizes' => [
                         'Large Cooler' => 550.0,
                         'Small Cooler' => 350.0,
@@ -158,7 +158,7 @@ class FoodSeeder extends Seeder
                 [
                     'name' => 'Vegetable Soup',
                     'description' => 'Rich vegetable soup with assorted meats',
-                    'image' => '/food/vegetable.png',
+                    'image' => '/food/vegetable-soup.jpeg',
                     'portion_sizes' => [
                         'Large Cooler' => 520.0,
                         'Small Cooler' => 320.0,
@@ -169,7 +169,7 @@ class FoodSeeder extends Seeder
                 [
                     'name' => 'Gbegiri',
                     'description' => 'Bean soup with Beef, Chicken, Cow-Leg and/or Tripe',
-                    'image' => '/food/gbegiri.png',
+                    'image' => '/food/gbegiri2.png',
                     'portion_sizes' => [
                         'Half Pan' => 50.0,
                     ],
@@ -179,6 +179,7 @@ class FoodSeeder extends Seeder
                 [
                     'name' => 'Beef',
                     'description' => 'Tender beef cuts, seasoned and cooked to perfection',
+                    'image' => '/food/beef.jpeg',
                     'portion_sizes' => [
                         'Large Cooler' => 1000.0,
                         'Small Cooler' => 500.0,
@@ -189,6 +190,18 @@ class FoodSeeder extends Seeder
                 [
                     'name' => 'Chicken',
                     'description' => 'Succulent chicken pieces, well-seasoned',
+                    'image' => '/food/chicken.jpeg',
+                    'portion_sizes' => [
+                        'Large Cooler' => 350.0,
+                        'Small Cooler' => 180.0,
+                        'Full Pan' => 100.0,
+                        'Half Pan' => 50.0,
+                    ],
+                ],
+                [
+                    'name' => 'Fish',
+                    'description' => 'Fried fish pieces with house spices',
+                    'image' => '/food/fish.jpeg',
                     'portion_sizes' => [
                         'Large Cooler' => 350.0,
                         'Small Cooler' => 180.0,
@@ -199,6 +212,7 @@ class FoodSeeder extends Seeder
                 [
                     'name' => 'African Chicken',
                     'description' => 'Traditional African-style chicken with rich spices',
+                    'image' => '/food/chicken.jpeg',
                     'portion_sizes' => [
                         'Large Cooler' => 450.0,
                         'Small Cooler' => 225.0,
@@ -208,6 +222,7 @@ class FoodSeeder extends Seeder
                 ],
                 [
                     'name' => 'Turkey',
+                    'image' => '/food/turkey.png',
                     'description' => 'Tender turkey pieces, seasoned and cooked',
                     'portion_sizes' => [
                         'Large Cooler' => 450.0,
@@ -231,6 +246,7 @@ class FoodSeeder extends Seeder
                 [
                     'name' => 'Plantains (Fried)',
                     'description' => 'Sweet fried plantains, golden and crispy',
+                    'image' => '/food/plaintain.jpeg',
                     'portion_sizes' => [
                         'Full Pan' => 80.0,
                         'Half Pan' => 40.0,
@@ -239,6 +255,7 @@ class FoodSeeder extends Seeder
                 [
                     'name' => 'Yam Porridge',
                     'description' => 'Yams simmered in special sauce with crayfish seasoning',
+                    'image' => '/food/yam-porridge.jpeg',
                     'portion_sizes' => [
                         'Large Cooler' => 350.0,
                         'Small Cooler' => 180.0,
@@ -248,10 +265,27 @@ class FoodSeeder extends Seeder
                 ],
                 [
                     'name' => 'Meat Pies',
+                    'image' => '/food/meat-pie.png',
                     'description' => 'Flaky pastry filled with seasoned meat',
                     'portion_sizes' => [
                         'Small Unit' => 2.0,
                         'Bigger Unit' => 3.0,
+                    ],
+                ],
+                [
+                    'name' => 'Puff Puff',
+                    'description' => 'Sweet fried dough balls, golden and soft',
+                    'image' => '/food/puff-puff.jpeg',
+                    'portion_sizes' => [
+                        'Unit' => 2.0,
+                    ],
+                ],
+                [
+                    'name' => 'Chin Chin',
+                    'description' => 'Crunchy fried dough bite-size snacks',
+                    'image' => '/food/chin-chin.jpeg',
+                    'portion_sizes' => [
+                        'Unit' => 2.0,
                     ],
                 ],
             ],
