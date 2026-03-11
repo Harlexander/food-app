@@ -6,7 +6,7 @@ import { dashboard } from '@/routes';
 import dashboardRoutes from '@/routes/dashboard';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, ChefHat, Folder, LayoutGrid, ShoppingCart, Users } from 'lucide-react';
+import { BookOpen, ChefHat, Folder, LayoutGrid, ShoppingCart, Sparkles, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -24,6 +24,11 @@ const mainNavItems: NavItem[] = [
         title: 'Foods',
         href: dashboardRoutes.foods(),
         icon: ChefHat
+    },
+    {
+        title: 'Extras',
+        href: '/dashboard/extras',
+        icon: Sparkles
     },
     {
         title: 'Customers',

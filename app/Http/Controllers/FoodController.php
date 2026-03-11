@@ -145,10 +145,18 @@ class FoodController extends Controller
             'inactive' => Foods::where('is_active', false)->count(),
         ];
 
+        // Get extras count per category
+        $extrasCountByCategory = CategoryExtra::select('category')
+            ->selectRaw('count(*) as count')
+            ->groupBy('category')
+            ->pluck('count', 'category')
+            ->toArray();
+
         return Inertia::render('dashboard/foods', [
             'foods' => $foods,
             'categories' => $categories,
             'counts' => $counts,
+            'extrasCountByCategory' => $extrasCountByCategory,
             'filters' => [
                 'category' => $request->get('category', 'all'),
                 'status' => $request->get('status', 'all'),

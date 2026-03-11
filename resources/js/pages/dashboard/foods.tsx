@@ -50,13 +50,14 @@ type FoodsPageProps = {
         active: number;
         inactive: number;
     };
+    extrasCountByCategory?: Record<string, number>;
     filters: {
         category: string;
         status: string;
     };
 };
 
-export default function FoodsPage({ foods, categories, counts, filters }: FoodsPageProps) {
+export default function FoodsPage({ foods, categories, counts, extrasCountByCategory, filters }: FoodsPageProps) {
     const [editDialogOpen, setEditDialogOpen] = React.useState(false)
     const [selectedFood, setSelectedFood] = React.useState<FoodsPageProps['foods'][0] | null>(null)
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false)
@@ -197,6 +198,9 @@ export default function FoodsPage({ foods, categories, counts, filters }: FoodsP
                                                 Portion Sizes
                                             </th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Extras
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Status
                                             </th>
                                             <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -230,6 +234,15 @@ export default function FoodsPage({ foods, categories, counts, filters }: FoodsP
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
+                                                    {(extrasCountByCategory?.[food.category] ?? 0) > 0 ? (
+                                                        <Badge className="bg-orange-100 text-orange-700 border-0">
+                                                            {extrasCountByCategory?.[food.category]} extra{(extrasCountByCategory?.[food.category] ?? 0) !== 1 ? 's' : ''}
+                                                        </Badge>
+                                                    ) : (
+                                                        <span className="text-sm text-gray-400">—</span>
+                                                    )}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
                                                     {food.is_active ? (
                                                         <Badge className="bg-green-100 text-green-700 border-0 flex items-center gap-1">
                                                             <CheckCircle className="h-3 w-3" />
@@ -244,15 +257,15 @@ export default function FoodsPage({ foods, categories, counts, filters }: FoodsP
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-right">
                                                     <div className="flex items-center justify-end gap-2">
-                                                        <Button 
-                                                            variant="outline" 
+                                                        <Button
+                                                            variant="outline"
                                                             size="sm"
                                                             onClick={() => handleEdit(food)}
                                                         >
                                                             Edit
                                                         </Button>
-                                                        <Button 
-                                                            variant="destructive" 
+                                                        <Button
+                                                            variant="destructive"
                                                             size="sm"
                                                             onClick={() => handleDeleteClick(food)}
                                                         >

@@ -3,6 +3,7 @@
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CategoryExtraController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\DashboardController;
@@ -24,6 +25,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dashboard/foods', [FoodController::class, 'store'])->name('dashboard.foods.store');
     Route::put('/dashboard/foods/{food}', [FoodController::class, 'update'])->name('dashboard.foods.update');
     Route::delete('/dashboard/foods/{food}', [FoodController::class, 'destroy'])->name('dashboard.foods.destroy');
+    Route::get('/dashboard/extras', [CategoryExtraController::class, 'index'])->name('dashboard.extras');
+    Route::post('/dashboard/extras', [CategoryExtraController::class, 'store'])->name('dashboard.extras.store');
+    Route::put('/dashboard/extras/{categoryExtra}', [CategoryExtraController::class, 'update'])->name('dashboard.extras.update');
+    Route::delete('/dashboard/extras/{categoryExtra}', [CategoryExtraController::class, 'destroy'])->name('dashboard.extras.destroy');
     Route::get('/dashboard/customers', [CustomerController::class, 'index'])->name('dashboard.customers');
 });
 
