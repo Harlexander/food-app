@@ -3,8 +3,11 @@ import { create } from 'zustand'
 export type CartItem = {
   id: string
   name: string
+  image?: string
   category: string
   size: string
+  extraName?: string
+  extraPrice?: number
   unitPrice: number
   quantity: number
 }
@@ -23,7 +26,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   addItem: (item) =>
     set((state) => {
       const existing = state.items.find(
-        (i) => i.name === item.name && i.size === item.size
+        (i) => i.name === item.name && i.size === item.size && i.extraName === item.extraName
       )
       if (existing) {
         return {
@@ -32,7 +35,7 @@ export const useCartStore = create<CartState>((set, get) => ({
           ),
         }
       }
-      const id = `${item.name}:${item.size}:${crypto.randomUUID?.() ?? Math.random()}`
+      const id = `${item.name}:${item.size}:${item.extraName ?? ''}:${crypto.randomUUID?.() ?? Math.random()}`
       return { items: [...state.items, { ...item, id }] }
     }),
   updateQuantity: (id, quantity) =>

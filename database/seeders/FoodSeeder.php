@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CategoryExtra;
 use App\Models\FoodPortionSize;
 use App\Models\Foods;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -101,36 +102,14 @@ class FoodSeeder extends Seeder
             ],
             'Soup' => [
                 [
-                    'name' => 'Egusi with Mixed Meat',
-                    'description' => 'Traditional melon seed soup with Beef, Chicken, Cow-Leg and/or Tripe',
+                    'name' => 'Egusi',
+                    'description' => 'Traditional melon seed soup',
                     'image' => '/food/egusi.jpeg',
                     'portion_sizes' => [
                         'Large Cooler' => 550.0,
                         'Small Cooler' => 350.0,
                         'Full Pan' => 200.0,
                         'Half Pan' => 80.0,
-                    ],
-                ],
-                [
-                    'name' => 'Egusi with Fish or Goat',
-                    'description' => 'Traditional melon seed soup with fish or goat meat',
-                    'image' => '/food/egusi.jpeg',
-                    'portion_sizes' => [
-                        'Large Cooler' => 550.0,
-                        'Small Cooler' => 350.0,
-                        'Full Pan' => 220.0,
-                        'Half Pan' => 100.0,
-                    ],
-                ],
-                [
-                    'name' => 'Egusi with Stock Fish & Dry Fish',
-                    'description' => 'Traditional melon seed soup with stock fish and dry fish',
-                    'image' => '/food/egusi.jpeg',
-                    'portion_sizes' => [
-                        'Large Cooler' => 550.0,
-                        'Small Cooler' => 350.0,
-                        'Full Pan' => 250.0,
-                        'Half Pan' => 120.0,
                     ],
                 ],
                 [
@@ -325,6 +304,27 @@ class FoodSeeder extends Seeder
                         'sort_order' => $sizeSortOrder[$sizeName] ?? ++$portionSortOrder,
                     ]);
                 }
+            }
+        }
+
+        // Seed category extras (e.g., protein choices for Soup)
+        $categoryExtras = [
+            'Soup' => [
+                ['name' => 'Mixed Meat', 'price' => 0.0],
+                ['name' => 'Fish', 'price' => 20.0],
+                ['name' => 'Goat', 'price' => 20.0],
+                ['name' => 'Stock Fish', 'price' => 40.0],
+            ],
+        ];
+
+        foreach ($categoryExtras as $category => $extras) {
+            foreach ($extras as $index => $extra) {
+                CategoryExtra::create([
+                    'category' => $category,
+                    'name' => $extra['name'],
+                    'price' => $extra['price'],
+                    'sort_order' => $index,
+                ]);
             }
         }
     }

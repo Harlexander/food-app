@@ -27,6 +27,8 @@ class OrderItem extends Model
         'food_id',
         'food_name',
         'size_name',
+        'extra_name',
+        'extra_price',
         'quantity',
         'unit_price',
         'total_price',

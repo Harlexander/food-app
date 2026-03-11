@@ -9,6 +9,9 @@ use App\Http\Controllers\DashboardController;
 
 
 Route::get('/', [FoodController::class, 'index'])->name('foods.index');
+Route::get('/cart', function () {
+    return Inertia::render('cart');
+})->name('cart');
 
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 

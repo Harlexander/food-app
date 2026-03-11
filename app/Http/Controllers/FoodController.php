@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CategoryExtra;
 use App\Models\Foods;
 use App\Models\FoodPortionSize;
 use Illuminate\Http\Request;
@@ -43,8 +44,23 @@ class FoodController extends Controller
             })->values()->toArray();
         })->toArray();
 
+        // Get category extras grouped by category
+        $categoryExtras = CategoryExtra::orderBy('sort_order')
+            ->get()
+            ->groupBy('category')
+            ->map(function ($extras) {
+                return $extras->map(function ($extra) {
+                    return [
+                        'id' => $extra->id,
+                        'name' => $extra->name,
+                        'price' => (float) $extra->price,
+                    ];
+                })->values()->toArray();
+            })->toArray();
+
         return Inertia::render('index', [
             'foods' => $foods,
+            'categoryExtras' => $categoryExtras,
         ]);
     }
 

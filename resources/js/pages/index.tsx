@@ -7,7 +7,6 @@ import { Head } from '@inertiajs/react';
 import { Star } from 'lucide-react';
 import AddToCartDialog from '@/components/add-to-cart-dialog';
 import FloatingCartButton from '@/components/floating-cart-button';
-import CartSheet from '@/components/cart-sheet';
 import { useAppearance } from '@/hooks/use-appearance';
 import { useCartStore } from '@/lib/cart-store';
 
@@ -24,17 +23,24 @@ type FoodItem = {
 
 type FoodsData = Record<string, FoodItem[]>;
 
+type CategoryExtra = {
+    id: number;
+    name: string;
+    price: number;
+};
+
+type CategoryExtrasData = Record<string, CategoryExtra[]>;
+
 function getPrimaryPrice(portions: PortionSizes): number {
     const first = Object.values(portions)[0];
     return typeof first === 'number' ? first : 0;
 }
 
-export default function Dashboard({ foods }: { foods: FoodsData }) {
+export default function Dashboard({ foods, categoryExtras }: { foods: FoodsData; categoryExtras?: CategoryExtrasData }) {
     const [selected, setSelected] = React.useState<string>('All');
     const [dialogOpen, setDialogOpen] = React.useState(false);
     const [dialogFood, setDialogFood] = React.useState<FoodItem | null>(null);
-    const [cartOpen, setCartOpen] = React.useState(false);
-    const { appearance, updateAppearance } = useAppearance();
+    const { updateAppearance } = useAppearance();
     const { items } = useCartStore();
 
     // Extract categories from the foods data
@@ -69,7 +75,7 @@ export default function Dashboard({ foods }: { foods: FoodsData }) {
             
             <Navbar active="Home" />
             <Head title="Food Menu" />
-            <div className="relative z-10 flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl sm:px-26 px-4 py-8 text-black">
+            <div className="relative z-10 flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl mx-auto max-w-6xl py-8 text-black">
                 <div className="flex flex-col gap-2">
                     <div className="text-muted-foreground">Food Menu</div>
                     <h1 className="text-4xl font-bold tracking-tight" style={{ fontFamily: 'Barlow' }}>Popular Delicious Foods</h1>
@@ -140,14 +146,10 @@ export default function Dashboard({ foods }: { foods: FoodsData }) {
                         category={dialogFood.category}
                         image={dialogFood.image || 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1600&auto=format&fit=crop'}
                         portion_sizes={dialogFood.portion_sizes}
+                        extras={categoryExtras?.[dialogFood.category]}
                     />
                 )}
-                {
-                    filteredFoods.length > 0 && dialogFood && items.length > 0 && (
-                        <FloatingCartButton onClick={() => setCartOpen(true)} />
-                    )
-                }
-                <CartSheet open={cartOpen} onOpenChange={setCartOpen} />
+                {items.length > 0 && <FloatingCartButton />}
             </div>
         </div>
     );
