@@ -388,7 +388,7 @@ class FoodController extends Controller
     private function uploadImage($image): string
     {
         $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-        $image->storeAs('public/food', $imageName);
+        $image->storeAs('food', $imageName, 'public');
 
         return '/storage/food/' . $imageName;
     }
@@ -405,8 +405,8 @@ class FoodController extends Controller
 
         if (str_starts_with($imagePath, '/storage/')) {
             // Uploaded via Storage — stored in storage/app/public/
-            $storagePath = 'public/' . ltrim(str_replace('/storage/', '', $imagePath), '/');
-            Storage::delete($storagePath);
+            $storagePath = ltrim(str_replace('/storage/', '', $imagePath), '/');
+            Storage::disk('public')->delete($storagePath);
         } elseif (str_starts_with($imagePath, '/food/')) {
             // Seeder image in public/food/
             $fullPath = public_path($imagePath);
