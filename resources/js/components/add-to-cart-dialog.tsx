@@ -125,7 +125,7 @@ export default function AddToCartDialog({ open, onOpenChange, name, category, po
                         />
                         <span className="text-base text-slate-800">{size}</span>
                       </div>
-                      <span className="text-slate-700">${Number(portion_sizes[size]).toFixed(2)}</span>
+                      {!hasExtras && <span className="text-slate-700">${Number(portion_sizes[size]).toFixed(2)}</span>}
                     </label>
                   ))}
                 </div>
