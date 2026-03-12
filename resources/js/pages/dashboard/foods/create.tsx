@@ -50,18 +50,38 @@ export default function CreateFoodPage({ categories }: CreateFoodPageProps) {
     });
 
     const [imagePreview, setImagePreview] = React.useState<string | null>(null);
+    const [isDragging, setIsDragging] = React.useState(false);
+
+    const processFile = (file: File) => {
+        if (!file.type.startsWith('image/')) return;
+        setData('image', file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImagePreview(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+    };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) {
-            setData('image', file);
-            // Create preview
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
+        if (file) processFile(file);
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(false);
+        const file = e.dataTransfer.files?.[0];
+        if (file) processFile(file);
+    };
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(false);
     };
 
     const removeImage = () => {
@@ -324,10 +344,15 @@ export default function CreateFoodPage({ categories }: CreateFoodPageProps) {
                                         <div className="space-y-2">
                                             <Label
                                                 htmlFor="image"
-                                                className="flex h-48 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 hover:border-gray-400"
+                                                className={`flex h-48 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors ${isDragging ? 'border-[#A67C5B] bg-orange-50' : 'border-gray-300 hover:border-gray-400'}`}
+                                                onDrop={handleDrop}
+                                                onDragOver={handleDragOver}
+                                                onDragLeave={handleDragLeave}
                                             >
-                                                <Upload className="mb-2 h-8 w-8 text-gray-400" />
-                                                <span className="text-sm text-gray-600">Click to upload</span>
+                                                <Upload className={`mb-2 h-8 w-8 ${isDragging ? 'text-[#A67C5B]' : 'text-gray-400'}`} />
+                                                <span className="text-sm text-gray-600">
+                                                    {isDragging ? 'Drop image here' : 'Drag & drop or click to upload'}
+                                                </span>
                                                 <span className="text-xs text-gray-500">
                                                     PNG, JPG, GIF up to 2MB
                                                 </span>
@@ -341,19 +366,6 @@ export default function CreateFoodPage({ categories }: CreateFoodPageProps) {
                                                 disabled={processing}
                                             />
                                         </div>
-                                    )}
-                                    {!imagePreview && (
-                                        <Button
-                                            type="button"
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => document.getElementById('image')?.click()}
-                                            disabled={processing}
-                                            className="w-full gap-2"
-                                        >
-                                            <Upload className="h-4 w-4" />
-                                            Choose Image
-                                        </Button>
                                     )}
                                     <InputError message={errors.image} />
                                 </CardContent>
