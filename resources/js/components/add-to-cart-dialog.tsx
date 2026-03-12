@@ -118,22 +118,16 @@ export default function AddToCartDialog({ open, onOpenChange, name, category, po
                           name="size"
                           className="size-4 accent-orange-600"
                           checked={selectedSize === size}
-                          onChange={() => setSelectedSize(size)}
+                          onChange={() => {
+                            setSelectedSize(size)
+                            setStep(hasExtras ? 'extra' : 'quantity')
+                          }}
                         />
                         <span className="text-base text-slate-800">{size}</span>
                       </div>
                       <span className="text-slate-700">${Number(portion_sizes[size]).toFixed(2)}</span>
                     </label>
                   ))}
-                </div>
-                <div className="mt-6">
-                  <Button
-                    className="h-12 w-full rounded-full bg-[#A67C5B] text-base font-semibold text-white hover:bg-orange-600 disabled:opacity-50"
-                    disabled={!selectedSize}
-                    onClick={handleNext}
-                  >
-                    Continue{selectedSize ? ` — $${sizePrice.toFixed(2)}` : ''}
-                  </Button>
                 </div>
               </div>
             )}
@@ -157,8 +151,8 @@ export default function AddToCartDialog({ open, onOpenChange, name, category, po
                         />
                         <span className="text-base text-slate-800">{extra.name}</span>
                       </div>
-                      <span className="text-slate-700">
-                        {extra.price > 0 ? `+ $${Number(extra.price).toFixed(2)}` : 'Included'}
+                      <span className="font-medium text-slate-800">
+                        ${(sizePrice + Number(extra.price)).toFixed(2)}
                       </span>
                     </label>
                   ))}
@@ -169,7 +163,7 @@ export default function AddToCartDialog({ open, onOpenChange, name, category, po
                     disabled={!selectedExtra}
                     onClick={handleNext}
                   >
-                    Continue{selectedExtra ? ` — $${(sizePrice + Number(selectedExtra.price)).toFixed(2)}` : ''}
+                    Continue
                   </Button>
                 </div>
               </div>
