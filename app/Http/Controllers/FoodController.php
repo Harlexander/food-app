@@ -204,15 +204,7 @@ class FoodController extends Controller
             // Handle image upload
             $imagePath = null;
             if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                // Store in public/food directory (same as existing images)
-                $imageDir = public_path('food');
-                if (!is_dir($imageDir)) {
-                    mkdir($imageDir, 0755, true);
-                }
-                $image->move($imageDir, $imageName);
-                $imagePath = '/food/' . $imageName;
+                $imagePath = $this->uploadImage($request->file('image'));
             }
 
             // Create food
@@ -241,16 +233,16 @@ class FoodController extends Controller
                 ->with('success', 'Food created successfully!');
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
-            
+
             return back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             // Delete uploaded image if food creation failed
-            if (isset($imagePath) && file_exists(public_path($imagePath))) {
-                @unlink(public_path($imagePath));
+            if ($imagePath) {
+                $this->deleteImage($imagePath);
             }
-            
+
             return back()->withErrors(['general' => 'Failed to create food. Please try again.'])->withInput();
         }
     }
@@ -263,7 +255,8 @@ class FoodController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'remove_image' => 'nullable|boolean',
             'category' => 'required|string|max:255',
             'is_active' => 'boolean',
             'sort_order' => 'integer|min:0',
@@ -277,11 +270,23 @@ class FoodController extends Controller
         try {
             DB::beginTransaction();
 
+            // Handle image
+            $imagePath = $food->image; // keep existing by default
+
+            if ($request->boolean('remove_image')) {
+                $this->deleteImage($food->image);
+                $imagePath = null;
+            } elseif ($request->hasFile('image')) {
+                // Delete old image, upload new one
+                $this->deleteImage($food->image);
+                $imagePath = $this->uploadImage($request->file('image'));
+            }
+
             // Update food
             $food->update([
                 'name' => $validated['name'],
                 'description' => $validated['description'] ?? null,
-                'image' => $validated['image'] ?? null,
+                'image' => $imagePath,
                 'category' => $validated['category'],
                 'is_active' => $validated['is_active'] ?? true,
                 'sort_order' => $validated['sort_order'] ?? 0,
@@ -331,7 +336,7 @@ class FoodController extends Controller
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'Validation failed',
@@ -339,7 +344,7 @@ class FoodController extends Controller
             ], 422);
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to update food. Please try again.',
@@ -361,9 +366,7 @@ class FoodController extends Controller
             $food->portionSizes()->delete();
 
             // Delete image file if it exists
-            if ($food->image && file_exists(public_path($food->image))) {
-                @unlink(public_path($food->image));
-            }
+            $this->deleteImage($food->image);
 
             // Delete the food
             $food->delete();
@@ -374,8 +377,42 @@ class FoodController extends Controller
                 ->with('success', 'Food deleted successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             return back()->withErrors(['general' => 'Failed to delete food. Please try again.']);
+        }
+    }
+
+    /**
+     * Upload an image to storage and return the public URL path.
+     */
+    private function uploadImage($image): string
+    {
+        $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+        $image->storeAs('public/food', $imageName);
+
+        return '/storage/food/' . $imageName;
+    }
+
+    /**
+     * Delete an image from storage or public directory.
+     * Handles both seeder images (/food/...) and uploaded images (/storage/food/...).
+     */
+    private function deleteImage(?string $imagePath): void
+    {
+        if (!$imagePath) {
+            return;
+        }
+
+        if (str_starts_with($imagePath, '/storage/')) {
+            // Uploaded via Storage — stored in storage/app/public/
+            $storagePath = 'public/' . ltrim(str_replace('/storage/', '', $imagePath), '/');
+            Storage::delete($storagePath);
+        } elseif (str_starts_with($imagePath, '/food/')) {
+            // Seeder image in public/food/
+            $fullPath = public_path($imagePath);
+            if (file_exists($fullPath)) {
+                @unlink($fullPath);
+            }
         }
     }
 }

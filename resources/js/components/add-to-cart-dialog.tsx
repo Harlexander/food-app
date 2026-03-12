@@ -132,7 +132,7 @@ export default function AddToCartDialog({ open, onOpenChange, name, category, po
                     disabled={!selectedSize}
                     onClick={handleNext}
                   >
-                    Continue
+                    Continue{selectedSize ? ` — $${sizePrice.toFixed(2)}` : ''}
                   </Button>
                 </div>
               </div>
@@ -158,7 +158,7 @@ export default function AddToCartDialog({ open, onOpenChange, name, category, po
                         <span className="text-base text-slate-800">{extra.name}</span>
                       </div>
                       <span className="text-slate-700">
-                        + ${Number(extra.price).toFixed(2)}
+                        {extra.price > 0 ? `+ $${Number(extra.price).toFixed(2)}` : 'Included'}
                       </span>
                     </label>
                   ))}
@@ -169,7 +169,7 @@ export default function AddToCartDialog({ open, onOpenChange, name, category, po
                     disabled={!selectedExtra}
                     onClick={handleNext}
                   >
-                    Continue
+                    Continue{selectedExtra ? ` — $${(sizePrice + Number(selectedExtra.price)).toFixed(2)}` : ''}
                   </Button>
                 </div>
               </div>
